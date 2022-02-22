@@ -12,16 +12,7 @@
 import { BrowserMultiFormatReader, Exception } from "@zxing/library";
 
 export default {
-  name: "stream-barcode-reader",
-
-  props: {
-    value: {
-      type: String,
-      default() {
-        return "";
-      },
-    },
-  },
+  name: "code-scanner",
 
   data() {
     return {
@@ -50,19 +41,13 @@ export default {
     this.codeReader.reset();
   },
   methods: {
-    onDecode() {
-      this.$emit("input", this.decodedText);
-    },
     start() {
       this.codeReader.decodeFromVideoDevice(
         undefined,
         this.$refs.scanner,
-        (result, err) => {
+        (result) => {
           if (result) {
-            this.$emit("input", result.text);
-          }
-          if (err) {
-            console.log(err);
+            this.$emit("decode", result.text);
           }
         }
       );
