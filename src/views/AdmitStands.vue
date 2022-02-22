@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>Przyjęcie stojaków develop</h1>
+    <h1>Przyjęcie stojaków development</h1>
     <code-scanner v-model="scannedValue" />
     <p>{{ scannedValue }}</p>
   </div>
