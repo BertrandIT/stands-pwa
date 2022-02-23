@@ -14,7 +14,6 @@
         </router-link></v-col
       >
     </v-row>
-    <v-btn likn to="/viewHistory/9746/Drewno140">Click me</v-btn>
   </v-container>
 </template>
 
