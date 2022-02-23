@@ -37,7 +37,7 @@ export default {
   },
   created() {
     // axios test
-    const res = axios.get("/windowStands");
+    const res = axios.get("/api/windowStands");
     console.log(res.data);
   },
 };

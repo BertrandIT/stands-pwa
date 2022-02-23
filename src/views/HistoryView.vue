@@ -69,7 +69,7 @@ export default {
       //   }`
       // );
       this.overlay = true;
-      const res = await axios.get("/standsHistoryPwa");
+      const res = await axios.get("/api/standsHistoryPwa");
       this.stands = res.data;
       this.overlay = false;
     },

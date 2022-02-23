@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     async getStandLogs(standId) {
-      const res = await axios.get(`/showLoads/${standId}`);
+      const res = await axios.get(`/api/showLoads/${standId}`);
       this.logs = res.data;
     },
   },
