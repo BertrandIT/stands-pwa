@@ -3,25 +3,24 @@
     <v-row>
       <v-col>
         <v-text-field
-          label="Data początkowa"
+          label="Data przyjęcia"
           type="date"
-          v-model="startDate"
-        ></v-text-field>
-      </v-col>
-      <v-col>
-        <v-text-field
-          label="Data Końcowa"
-          type="date"
-          v-model="endDate"
+          v-model="admitDate"
+          dense
+          hide-details
+          style="min-width: 160px"
         ></v-text-field>
       </v-col>
       <v-col>
         <v-select
           :items="statuses"
           label="Status stojaka"
-          v-model="selected.status"
+          v-model="selected.action"
           item-text="text"
           item-value="value"
+          dense
+          hide-details
+          style="min-width: 160px"
         ></v-select>
       </v-col>
       <v-col>
@@ -31,6 +30,9 @@
           v-model="selected.localization"
           item-text="text"
           item-value="value"
+          dense
+          hide-details
+          style="min-width: 160px"
         ></v-select>
       </v-col>
       <v-col>
@@ -40,13 +42,28 @@
           v-model="selected.deadline"
           item-text="text"
           item-value="value"
+          dense
+          hide-details
+          style="min-width: 160px"
         ></v-select>
       </v-col>
       <v-col>
-        <v-text-field label="Nr stojaka" v-model="standBarcode"></v-text-field>
+        <v-text-field
+          label="Nr stojaka"
+          v-model="barcode"
+          dense
+          hide-details
+          style="min-width: 160px"
+        ></v-text-field>
       </v-col>
       <v-col>
-        <v-text-field label="Klient" v-model="client"></v-text-field>
+        <v-text-field
+          label="Klient"
+          v-model="client"
+          dense
+          hide-details
+          style="min-width: 160px"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row>
@@ -63,13 +80,12 @@ export default {
   props: { sendFiltersToParent: { type: Function, required: true } },
   data() {
     return {
-      startDate: null,
-      endDate: null,
+      admitDate: null,
       client: "",
-      standBarcode: "",
+      barcode: "",
       selected: {
         deadline: null,
-        status: null,
+        action: null,
         localization: null,
       },
       statuses: [
@@ -100,7 +116,7 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
         client: this.client,
-        standBarcode: this.standBarcode,
+        barcode: this.barcode,
       });
     },
   },

@@ -39,6 +39,11 @@ const routes = [
     name: "viewHistory",
     component: () => import("../views/HistoryView.vue"),
   },
+  {
+    path: "/viewHistory/:standId/:standBarcode",
+    name: "standDetails",
+    component: () => import("../views/StandDetails.vue"),
+  },
 ];
 
 const router = new VueRouter({
