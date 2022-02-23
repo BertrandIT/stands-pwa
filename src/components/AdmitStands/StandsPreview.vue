@@ -9,7 +9,7 @@
     >
       {{ alert.msg }}
     </v-alert>
-    <code-scanner @decode="onDecode" v-if="action === 2" />
+    <code-scanner @decode="onDecode" v-if="scanning" />
     <div v-else>
       <p class="text-h5 mt-4 font-weight-bold text-uppercase">
         Lokalizacja: {{ standsData.localization.split("_")[1] }}
@@ -21,11 +21,28 @@
       class="mt-10 justify-lg-end fill-height justify-center justify-sm-space-around align-sm-end align-center"
     >
       <v-btn
+        v-if="!scanning"
         color="primary"
         x-large
         class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="saveStands"
         >Zapisz</v-btn
+      >
+      <v-btn
+        v-if="scanning"
+        color="primary"
+        x-large
+        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
+        @click="scanning = false"
+        >Zakończ</v-btn
+      >
+      <v-btn
+        v-else
+        color="primary"
+        x-large
+        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
+        @click="scanning = true"
+        >Zeskanuj kod</v-btn
       >
       <v-btn
         color="blue darken-4"
@@ -62,6 +79,7 @@ export default {
       alert: {
         trigger: false,
       },
+      scanning: false,
     };
   },
   computed: {
@@ -69,6 +87,9 @@ export default {
       standsData: (state) => state.standsData,
       stands: (state) => state.stands,
     }),
+  },
+  created() {
+    this.scanning = this.action === 2;
   },
   methods: {
     ...mapActions(["assignStands"]),
