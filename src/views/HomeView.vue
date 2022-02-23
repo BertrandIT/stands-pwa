@@ -8,7 +8,7 @@
         class="d-flex justify-center"
       >
         <router-link :to="tab.link">
-          <v-btn x-large color="primary" style="width: 75vw">
+          <v-btn x-large color="primary" style="width: 75vw" :id="`homebutton-${idx}`">
             {{ tab.text }}
           </v-btn>
         </router-link></v-col
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       tabs: [
-        { text: "Przyjęcie stojaków", link: "/admitStands" },
+        { text: "Przyjęcie", link: "/admitStands" },
         { text: "Załadunek stojaków", link: "/loadStands" },
         { text: "Wysyłka stojaków", link: "/sendStands" },
         { text: "Zwrot stojaków", link: "/returnStands" },
