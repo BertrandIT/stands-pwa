@@ -5,6 +5,7 @@
       <div class="overlay-element"></div>
       <div class="laser"></div>
     </div>
+    {{ devices }}
   </div>
 </template>
 
@@ -22,10 +23,12 @@ export default {
         navigator &&
         navigator.mediaDevices &&
         "enumerateDevices" in navigator.mediaDevices,
+      devices: [],
     };
   },
 
-  mounted() {
+  async mounted() {
+    this.devices = await navigator.mediaDevices.enumerateDevices();
     if (!this.isMediaStreamAPISupported) {
       throw new Exception("Media Stream API is not supported");
     }
