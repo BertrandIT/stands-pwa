@@ -17,4 +17,9 @@ new Vue({
   store,
   vuetify,
   render: (h) => h(App),
+  computed:{
+    windowHeight(){
+      return window.innerHeight;
+    }
+  }
 }).$mount("#app");
