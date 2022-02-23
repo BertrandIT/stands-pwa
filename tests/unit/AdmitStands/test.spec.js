@@ -3,12 +3,21 @@ import AdmitStands from "@/views/AdmitStands";
 import HomeView from "@/views/HomeView";
 import {mount} from "@vue/test-utils";
 
-test('Calls save() when pressing save button', () => {
-  const wrapper = mount(HomeView);
-  const button = wrapper.find('#homebutton-0')
-  button.trigger('click')
-  expect(wrapper.emitted('Przyjęcie')).toHaveLength(1)
-})
+describe("Strona główna",  () => {
+  it("Przycisk Wroc",  () => {
+    const wrapper = mount(AdmitStands)
+
+   wrapper.find('button').trigger('click')
+    
+  });
+});
+
+// test('Calls save() when pressing save button', () => {
+//   const wrapper = mount(HomeView);
+//   const button = wrapper.find('#homebutton-0')
+//   button.trigger('click')
+//   expect(wrapper.emitted('Przyjęcie')).toHaveLength(1)
+// })
 
 // const localVue = createLocalVue()
 // localVue.use(VueRouter)
