@@ -60,6 +60,7 @@ export default {
   },
   async created() {
     await this.getStands();
+    console.log(this.filteredStands)
   },
   methods: {
     async getStands() {
