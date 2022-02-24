@@ -35,7 +35,7 @@
           label="Własny stojak"
           @change="
             (event) => {
-              this.$emit('setData', { value: event, key: 'onwStand' });
+              this.$emit('setData', { value: event, key: 'ownStand' });
             }
           "
         ></v-checkbox>
