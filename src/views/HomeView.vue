@@ -19,8 +19,6 @@
 
 <script>
 // @ is an alias to /src
-// axios test
-import axios from "@/axios";
 
 export default {
   name: "HomeView",
@@ -34,11 +32,6 @@ export default {
         { text: "Przegląd historii", link: "/viewHistory" },
       ],
     };
-  },
-  created() {
-    // axios test
-    const res = axios.get("/api/windowStands");
-    console.log(res.data);
   },
 };
 </script>
