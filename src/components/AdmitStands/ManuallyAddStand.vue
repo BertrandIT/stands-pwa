@@ -1,23 +1,20 @@
 <template>
   <v-container style="width: 100%" class="mx-0 pa-0">
-    <v-alert
-      :value="alert.trigger"
-      :type="alert.type"
-      dismissible
-      style="position: absolute; z-index: 4"
-      transition="slide-x-transition"
-    >
-      {{ alert.msg }}
-    </v-alert>
     <v-text-field
+      id="add-stand-input"
       v-model="standBarcode"
       label="Kod stojaka"
       prepend-inner-icon="mdi-barcode"
       class="mx-0"
       clearable
       @keydown.enter="addStand"
+      @change="(e) => assignStandBarcode(e)"
+      @click:clear="assignStandBarcode('')"
+      ref="barcodeinput"
     ></v-text-field>
-    <v-btn color="primary" @click="addStand" class="white--text">Dodaj</v-btn>
+    <v-btn id="add-button" color="primary" @click="addStand" class="white--text"
+      >Dodaj</v-btn
+    >
   </v-container>
 </template>
 <script>
@@ -26,9 +23,6 @@ export default {
   data() {
     return {
       standBarcode: "",
-      alert: {
-        trigger: false,
-      },
     };
   },
   computed: {
@@ -36,31 +30,34 @@ export default {
       stands: (state) => state.stands,
     }),
   },
+  mounted() {
+    this.$refs.barcodeinput.focus();
+  },
   methods: {
-    ...mapActions(["assignStands"]),
-    addStand() {
-      this.standBarcode = this.standBarcode.includes("STAND:")
-        ? this.standBarcode.split(":")[1].trim()
-        : this.standBarcode.trim().toUpperCase();
-      if (this.stands.includes(this.standBarcode)) {
-        this.alert.msg = `Stojak ${this.standBarcode} został już dodany`;
-        this.alert.type = "warning";
-        this.alert.trigger = true;
-        setTimeout(() => {
-          this.alert.trigger = false;
-          this.scanned = false;
-        }, 1500);
-      } else {
-        this.assignStands([...this.stands, this.standBarcode]);
-        this.alert.msg = `Dodano stojak ${this.standBarcode}`;
-        this.alert.type = "success";
-        this.alert.trigger = true;
-        setTimeout(() => {
-          this.alert.trigger = false;
-          this.scanned = false;
-        }, 1500);
+    ...mapActions(["assignStands", "assignStandBarcode"]),
+    async addStand() {
+      if (this.standBarcode) {
+        this.standBarcode = this.standBarcode.includes("STAND:")
+          ? this.standBarcode.split(":")[1].trim()
+          : this.standBarcode.trim().toUpperCase();
+        if (this.stands.includes(this.standBarcode)) {
+          this.$root.manageAlert({
+            text: `Stojak ${this.standBarcode} został już dodany`,
+            type: "warning",
+            time: 1500,
+          });
+        } else {
+          this.assignStands([...this.stands, this.standBarcode]);
+          this.$root.manageAlert({
+            text: `Dodano stojak ${this.standBarcode}`,
+            type: "success",
+            time: 1500,
+          });
+        }
+        this.assignStandBarcode("");
+        this.standBarcode = "";
+        this.$refs.barcodeinput.focus();
       }
-      this.standBarcode = "";
     },
   },
 };

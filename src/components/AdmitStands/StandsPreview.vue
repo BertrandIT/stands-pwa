@@ -1,57 +1,86 @@
 <template>
   <v-container fluid>
-    <v-alert
-      :value="alert.trigger"
-      :type="alert.type"
-      dismissible
-      style="position: absolute; z-index: 4"
-      transition="slide-x-transition"
-    >
-      {{ alert.msg }}
-    </v-alert>
     <code-scanner @decode="onDecode" v-if="scanning" />
     <div v-else>
       <p class="text-h5 mt-4 font-weight-bold text-uppercase">
         Lokalizacja: {{ standsData.localization.split("_")[1] }}
       </p>
-      <manually-add-stand />
+      <manually-add-stand ref="addStand" />
       <stands-list />
     </div>
     <v-row
-      class="mt-10 justify-lg-end fill-height justify-center justify-sm-space-around align-sm-end align-center"
+      class="
+        mt-10
+        justify-lg-end
+        fill-height
+        justify-center justify-sm-space-around
+        align-sm-end align-center
+      "
     >
       <v-btn
+        id="save-button"
         v-if="!scanning"
         color="primary"
         x-large
-        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
-        @click="saveStands"
+        class="
+          white--text
+          justify-center
+          my-2 my-sm-0
+          mr-lg-4
+          flex-shrink-1 flex-sm-shrink-0
+        "
+        @click="checkSave"
         >Zapisz</v-btn
       >
       <v-btn
+        id="end-scanning-button"
         v-if="scanning"
         color="primary"
         x-large
-        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
+        class="
+          white--text
+          justify-center
+          my-2 my-sm-0
+          mr-lg-4
+          flex-shrink-1 flex-sm-shrink-0
+        "
         @click="scanning = false"
         >Zakończ</v-btn
       >
       <v-btn
+        id="scan-stand-button"
         v-else
         color="primary"
         x-large
-        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
+        class="
+          white--text
+          justify-center
+          my-2 my-sm-0
+          mr-lg-4
+          flex-shrink-1 flex-sm-shrink-0
+        "
         @click="scanning = true"
         >Zeskanuj kod</v-btn
       >
       <v-btn
-        color="blue darken-4"
+        id="cancel-button"
+        color="warning"
         x-large
-        class="white--text justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0"
+        class="
+          white--text
+          order-last order-sm-first
+          justify-center
+          mr-lg-4
+          my-2 my-sm-0
+          flex-shrink-1 flex-sm-shrink-0
+        "
         @click="$router.go(-1)"
         >Wróć</v-btn
       >
     </v-row>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="50"></v-progress-circular>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -76,16 +105,15 @@ export default {
   data() {
     return {
       scanned: false,
-      alert: {
-        trigger: false,
-      },
       scanning: false,
+      overlay: false,
     };
   },
   computed: {
     ...mapState({
       standsData: (state) => state.standsData,
       stands: (state) => state.stands,
+      standBarcode: (state) => state.standBarcode,
     }),
   },
   created() {
@@ -93,33 +121,36 @@ export default {
   },
   methods: {
     ...mapActions(["assignStands"]),
-    onDecode(decodedText) {
+    async onDecode(decodedText) {
       if (!this.scanned) {
         this.scanned = true;
         const standBarcode = decodedText.includes("STAND:")
           ? decodedText.split(":")[1].trim()
           : decodedText.trim().toUpperCase();
         if (this.stands.includes(standBarcode)) {
-          this.alert.msg = `Stojak ${standBarcode} został już dodany`;
-          this.alert.type = "warning";
-          this.alert.trigger = true;
-          setTimeout(() => {
-            this.alert.trigger = false;
-            this.scanned = false;
-          }, 1500);
+          this.$root.manageAlert({
+            text: `Stojak ${this.standBarcode} został już dodany`,
+            type: "warning",
+            time: 1500,
+            callback: () => {
+              this.scanned = false;
+            },
+          });
         } else {
           this.assignStands([...this.stands, standBarcode]);
-          this.alert.msg = `Dodano stojak ${standBarcode}`;
-          this.alert.type = "success";
-          this.alert.trigger = true;
-          setTimeout(() => {
-            this.alert.trigger = false;
-            this.scanned = false;
-          }, 1500);
+          this.$root.manageAlert({
+            text: `Dodano stojak ${this.standBarcode}`,
+            type: "success",
+            time: 1500,
+            callback: () => {
+              this.scanned = false;
+            },
+          });
         }
       }
     },
     async saveStands() {
+      this.overlay = true;
       await axios
         .post("api/savestands", {
           ...this.standsData,
@@ -127,21 +158,27 @@ export default {
           user: "admin",
         })
         .then(() => {
-          this.alert.msg = "Pomyślnie dodano stojaki";
-          this.alert.type = "success";
-          this.alert.trigger = true;
-          setTimeout(() => {
-            this.alert.trigger = false;
-          }, 3000);
+          this.assignStands([]);
+          this.overlay = false;
+          this.$root.manageAlert({
+            text: "Pomyślnie dodano stojaki",
+            type: "success",
+          });
         })
         .catch(() => {
-          this.alert.msg = "Coś poszło nie tak skontaktuj się z działem IT";
-          this.alert.type = "error";
-          this.alert.trigger = true;
-          setTimeout(() => {
-            this.alert.trigger = false;
-          }, 3000);
+          this.overlay = false;
+          this.$root.manageAlert({
+            text: "Coś poszło nie tak skontaktuj się z działem IT",
+            type: "error",
+          });
         });
+    },
+    checkSave() {
+      if (this.standBarcode) {
+        this.$refs.addStand.addStand();
+      } else {
+        this.saveStands();
+      }
     },
   },
 };

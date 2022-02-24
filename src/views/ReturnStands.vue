@@ -34,7 +34,7 @@
     </v-row>
     <v-row>
       <v-col class="d-flex">
-        <v-btn color="warning" @click="cancel" id="cancel-return">Anuluj</v-btn>
+        <v-btn color="success" @click="cancel" id="cancel-return">Anuluj</v-btn>
         <v-btn class="ml-auto" color="success" @click="save" id="save-return"
           >Zapisz</v-btn
         >

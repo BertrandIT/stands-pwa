@@ -2,22 +2,26 @@
   <v-container style="width: 100%" class="mx-0 pa-0">
     <v-virtual-scroll
       width="100%"
-      :items="stands"
+      :items="standLoad"
       item-height="40"
       :height="($root.windowHeight / 5) * 2"
     >
-      <template v-slot:default="{ item, index }">
-        <v-list-item :key="item">
+      <template #default="{ item, index }">
+        <v-list-item :key="index">
           <v-list-item-content>
             <v-list-item-title
               class="text-h6 mt-4 font-weight-bold text-uppercase"
-              v-text="item"
+              v-text="
+                item.description
+                  ? `${item.barcode} ${item.description}`
+                  : item.barcode
+              "
             ></v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-action>
             <v-btn
-              :id="`delete-stand-${index}`"
+              :id="`delete-element-${index}`"
               x-large
               @click="deleteStand(item)"
               icon
@@ -38,16 +42,20 @@ export default {
   },
   computed: {
     ...mapState({
-      stands: (state) => state.stands,
+      standLoad: (state) => state.standLoad,
+      deleted: (state) => state.deleted,
     }),
   },
   methods: {
-    ...mapActions(["assignStands"]),
-    deleteStand(stand) {
-      const newData = [...this.stands];
-      const prevIndex = this.stands.findIndex((item) => item === stand);
+    ...mapActions(["assignStandLoad", "assignDeleted"]),
+    deleteStand(element) {
+      const newData = [...this.standLoad];
+      const prevIndex = this.standLoad.findIndex((item) => item === element);
+      if (Object.prototype.hasOwnProperty.call(element, "id")) {
+        this.assignDeleted([...this.deleted, { id: element.id }]);
+      }
       newData.splice(prevIndex, 1);
-      this.assignStands(newData);
+      this.assignStandLoad(newData);
     },
   },
 };

@@ -7,7 +7,7 @@
       item-height="40"
       :height="$root.windowHeight - 250"
     >
-      <template v-slot:default="{ item }">
+      <template v-slot:default="{ item, index }">
         <v-list-item :key="item">
           <v-list-item-content>
             <v-list-item-title
@@ -21,7 +21,7 @@
               x-large
               @click="deleteStand(item)"
               icon
-              id="${delete-from-return-${item}}"
+              :id="`delete-from-return-${index}`"
             >
               <v-icon color="red lighten-1">mdi-delete-outline</v-icon>
             </v-btn>
