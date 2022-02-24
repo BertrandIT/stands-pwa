@@ -16,6 +16,7 @@
         <v-select
           id="status-select"
           :items="statuses"
+          id="status"
           label="Status stojaka"
           v-model="selected.action"
           item-text="text"
