@@ -4,7 +4,7 @@
       <v-col>
         <v-text-field
           v-model="search"
-          label="Szukaj po kliencie lub nr stojaka"
+          label="Szukaj po kliencie, nr stojaka lub zleceniu"
         >
         </v-text-field>
       </v-col>
@@ -38,7 +38,9 @@ export default {
             .includes(search);
           const checkClientName =
             stand.name && stand.name.toLowerCase().includes(search);
-          return checkBarcode || checkClientName;
+          const checkItems =
+            stand.items && stand.items.toLowerCase().includes(search);
+          return checkBarcode || checkClientName || checkItems;
         });
         // filtruj po zamówieniu
         // edytuj stojak zaznacz elementy - pobierz nowy stojak - sprawdź czy nie wysłany/zwrócony - przerzuć

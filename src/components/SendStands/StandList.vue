@@ -66,13 +66,15 @@ export default {
   },
   methods: {
     toggleSelectStand(standId, standBarcode) {
-      const isStandSelectedIndex = this.selectedStands.findIndex(
-        (item) => item === standId
-      );
-      if (isStandSelectedIndex < 0) {
-        this.selectedStands.push(standId);
-      } else {
-        this.selectedStands.splice(isStandSelectedIndex, 1);
+      if (this.editDialog.windowStandId !== standId) {
+        const isStandSelectedIndex = this.selectedStands.findIndex(
+          (item) => item === standId
+        );
+        if (isStandSelectedIndex < 0) {
+          this.selectedStands.push(standId);
+        } else {
+          this.selectedStands.splice(isStandSelectedIndex, 1);
+        }
       }
     },
     getColor(standId) {
