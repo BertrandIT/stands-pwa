@@ -16,6 +16,8 @@
       class="mx-0"
       clearable
       @keydown.enter="addStand"
+      @change="(e) => assignStandBarcode(e)"
+      @click:clear="assignStandBarcode('')"
     ></v-text-field>
     <v-btn color="primary" @click="addStand" class="white--text">Dodaj</v-btn>
   </v-container>
@@ -37,30 +39,39 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["assignStands"]),
-    addStand() {
-      this.standBarcode = this.standBarcode.includes("STAND:")
-        ? this.standBarcode.split(":")[1].trim()
-        : this.standBarcode.trim().toUpperCase();
-      if (this.stands.includes(this.standBarcode)) {
-        this.alert.msg = `Stojak ${this.standBarcode} został już dodany`;
-        this.alert.type = "warning";
-        this.alert.trigger = true;
-        setTimeout(() => {
-          this.alert.trigger = false;
-          this.scanned = false;
-        }, 1500);
-      } else {
-        this.assignStands([...this.stands, this.standBarcode]);
-        this.alert.msg = `Dodano stojak ${this.standBarcode}`;
-        this.alert.type = "success";
-        this.alert.trigger = true;
-        setTimeout(() => {
-          this.alert.trigger = false;
-          this.scanned = false;
-        }, 1500);
+    ...mapActions(["assignStands", "assignStandBarcode"]),
+    async addStand() {
+      if (this.standBarcode) {
+        this.standBarcode = this.standBarcode.includes("STAND:")
+          ? this.standBarcode.split(":")[1].trim()
+          : this.standBarcode.trim().toUpperCase();
+        if (this.stands.includes(this.standBarcode)) {
+          // await this.triggerAlert(
+          //   `Stojak ${this.standBarcode} został już dodany`,
+          //   "warning",
+          //   1500
+          // );
+        } else {
+          this.assignStands([...this.stands, this.standBarcode]);
+          // await this.triggerAlert(
+          //   `Dodano stojak ${this.standBarcode}`,
+          //   "success",
+          //   1500
+          // );
+        }
+        this.assignStandBarcode("");
+        this.standBarcode = "";
       }
-      this.standBarcode = "";
+    },
+    triggerAlert(msg, type, time = 3000) {
+      return new Promise(() => {
+        this.alert.msg = msg;
+        this.alert.type = type;
+        this.alert.trigger = true;
+        setTimeout(() => {
+          this.alert.trigger = false;
+        }, time);
+      });
     },
   },
 };

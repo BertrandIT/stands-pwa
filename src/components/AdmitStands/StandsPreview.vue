@@ -14,7 +14,7 @@
       <p class="text-h5 mt-4 font-weight-bold text-uppercase">
         Lokalizacja: {{ standsData.localization.split("_")[1] }}
       </p>
-      <manually-add-stand />
+      <manually-add-stand ref="addStand" />
       <stands-list />
     </div>
     <v-row
@@ -25,7 +25,7 @@
         color="primary"
         x-large
         class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
-        @click="saveStands"
+        @click="checkSave"
         >Zapisz</v-btn
       >
       <v-btn
@@ -86,6 +86,7 @@ export default {
     ...mapState({
       standsData: (state) => state.standsData,
       stands: (state) => state.stands,
+      standBarcode: (state) => state.standBarcode,
     }),
   },
   created() {
@@ -93,29 +94,27 @@ export default {
   },
   methods: {
     ...mapActions(["assignStands"]),
-    onDecode(decodedText) {
+    async onDecode(decodedText) {
       if (!this.scanned) {
         this.scanned = true;
         const standBarcode = decodedText.includes("STAND:")
           ? decodedText.split(":")[1].trim()
           : decodedText.trim().toUpperCase();
         if (this.stands.includes(standBarcode)) {
-          this.alert.msg = `Stojak ${standBarcode} został już dodany`;
-          this.alert.type = "warning";
-          this.alert.trigger = true;
-          setTimeout(() => {
-            this.alert.trigger = false;
-            this.scanned = false;
-          }, 1500);
+          await this.triggerAlert(
+            `Stojak ${this.standBarcode} został już dodany`,
+            "warning",
+            1500
+          );
+          this.scanned = false;
         } else {
           this.assignStands([...this.stands, standBarcode]);
-          this.alert.msg = `Dodano stojak ${standBarcode}`;
-          this.alert.type = "success";
-          this.alert.trigger = true;
-          setTimeout(() => {
-            this.alert.trigger = false;
-            this.scanned = false;
-          }, 1500);
+          await this.triggerAlert(
+            `Dodano stojak ${this.standBarcode}`,
+            "success",
+            1500
+          );
+          this.scanned = false;
         }
       }
     },
@@ -127,21 +126,31 @@ export default {
           user: "admin",
         })
         .then(() => {
-          this.alert.msg = "Pomyślnie dodano stojaki";
-          this.alert.type = "success";
-          this.alert.trigger = true;
-          setTimeout(() => {
-            this.alert.trigger = false;
-          }, 3000);
+          this.triggerAlert("Pomyślnie dodano stojaki", "success");
         })
         .catch(() => {
-          this.alert.msg = "Coś poszło nie tak skontaktuj się z działem IT";
-          this.alert.type = "error";
-          this.alert.trigger = true;
-          setTimeout(() => {
-            this.alert.trigger = false;
-          }, 3000);
+          this.triggerAlert(
+            "Coś poszło nie tak skontaktuj się z działem IT",
+            "error"
+          );
         });
+    },
+    checkSave() {
+      if (this.standBarcode) {
+        this.$refs.addStand.addStand();
+      } else {
+        this.saveStands();
+      }
+    },
+    triggerAlert(msg, type, time = 3000) {
+      return new Promise(() => {
+        this.alert.msg = msg;
+        this.alert.type = type;
+        this.alert.trigger = true;
+        setTimeout(() => {
+          this.alert.trigger = false;
+        }, time);
+      });
     },
   },
 };
