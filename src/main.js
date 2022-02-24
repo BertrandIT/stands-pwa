@@ -17,9 +17,34 @@ new Vue({
   store,
   vuetify,
   render: (h) => h(App),
-  computed:{
-    windowHeight(){
+  data: {
+    alert: {
+      trigger: false,
+      msg: "",
+      type: "info",
+    },
+  },
+  computed: {
+    windowHeight() {
       return window.innerHeight;
-    }
-  }
+    },
+  },
+  methods: {
+    manageAlert({ text, type, callback = null, time = 3000 }) {
+      this.alert.msg = text;
+      this.alert.type = type;
+      this.alert.trigger = true;
+      setTimeout(() => {
+        if (callback) {
+          callback();
+        }
+        this.resetAlert();
+      }, time);
+    },
+    resetAlert() {
+      this.alert.trigger = false;
+      this.alert.msg = null;
+      this.alert.type = "info";
+    },
+  },
 }).$mount("#app");
