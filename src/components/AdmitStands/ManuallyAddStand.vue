@@ -9,6 +9,7 @@
       @keydown.enter="addStand"
       @change="(e) => assignStandBarcode(e)"
       @click:clear="assignStandBarcode('')"
+      ref="barcodeinput"
     ></v-text-field>
     <v-btn color="primary" @click="addStand" class="white--text">Dodaj</v-btn>
   </v-container>
@@ -25,6 +26,9 @@ export default {
     ...mapState({
       stands: (state) => state.stands,
     }),
+  },
+  mounted() {
+    this.$refs.barcodeinput.focus();
   },
   methods: {
     ...mapActions(["assignStands", "assignStandBarcode"]),
@@ -49,6 +53,7 @@ export default {
         }
         this.assignStandBarcode("");
         this.standBarcode = "";
+        this.$refs.barcodeinput.focus();
       }
     },
   },

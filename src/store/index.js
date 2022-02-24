@@ -9,6 +9,8 @@ export default new Vuex.Store({
     standBarcode: "",
     standToLoad: {},
     stands: [],
+    standLoad: [],
+    deleted: [],
   },
   getters: {},
   mutations: {
@@ -33,6 +35,15 @@ export default new Vuex.Store({
           wasEmpty !== undefined ? wasEmpty : state.standToLoad.wasEmpty,
       };
     },
+    setStandLoad(state, data) {
+      state.standLoad = data;
+    },
+    setDeleted(state, data) {
+      state.deleted = data;
+    },
+    clearStandToLoad(state) {
+      state.standToLoad = {};
+    },
   },
   actions: {
     assignStandsData({ commit }, data) {
@@ -47,6 +58,15 @@ export default new Vuex.Store({
     },
     assignStandToLoad({ commit }, data) {
       commit("setStandToLoad", data);
+    },
+    assignStandLoad({ commit }, data) {
+      commit("setStandLoad", data);
+    },
+    assignDeleted({ commit }, data) {
+      commit("setDeleted", data);
+    },
+    clearStandToLoad({ commit }) {
+      commit("clearStandToLoad");
     },
   },
   modules: {},

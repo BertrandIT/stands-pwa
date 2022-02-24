@@ -36,9 +36,9 @@
         >Zeskanuj kod</v-btn
       >
       <v-btn
-        color="blue darken-4"
+        color="warning"
         x-large
-        class="white--text justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0"
+        class="white--text order-last order-sm-first justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0"
         @click="$router.go(-1)"
         >Wróć</v-btn
       >
