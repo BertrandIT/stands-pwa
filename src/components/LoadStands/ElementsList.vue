@@ -6,8 +6,8 @@
       item-height="40"
       :height="($root.windowHeight / 5) * 2"
     >
-      <template #default="{ item, idx }">
-        <v-list-item :key="idx">
+      <template #default="{ item, index }">
+        <v-list-item :key="index">
           <v-list-item-content>
             <v-list-item-title
               class="text-h6 mt-4 font-weight-bold text-uppercase"
@@ -20,7 +20,12 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-btn x-large @click="deleteStand(item)" icon>
+            <v-btn
+              :id="`delete-element-${index}`"
+              x-large
+              @click="deleteStand(item)"
+              icon
+            >
               <v-icon color="red lighten-1">mdi-delete-outline</v-icon>
             </v-btn>
           </v-list-item-action>

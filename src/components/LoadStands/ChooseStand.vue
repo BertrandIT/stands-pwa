@@ -12,6 +12,7 @@
       <code-scanner @decode="addStand" v-if="scanning" />
       <v-col v-else>
         <v-text-field
+          id="choose-stand-input"
           v-model="standBarcode"
           label="Kod stojaka"
           prepend-inner-icon="mdi-barcode"
@@ -22,26 +23,54 @@
       </v-col>
     </v-row>
     <v-row
-      class="justify-lg-end fill-height justify-center justify-sm-space-around flex-sm-row flex-column align-sm-end align-center"
+      class="
+        justify-lg-end
+        fill-height
+        justify-center justify-sm-space-around
+        flex-sm-row flex-column
+        align-sm-end align-center
+      "
     >
       <v-btn
+        id="scanner-button"
         color="primary"
         x-large
-        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
+        class="
+          white--text
+          justify-center
+          my-2 my-sm-0
+          mr-lg-4
+          flex-shrink-1 flex-sm-shrink-0
+        "
         @click="scanning = !scanning"
         >{{ scanning ? "Zakończ" : "Zeskanuj stojak" }}</v-btn
       >
       <v-btn
+        id="submit-button"
         color="success"
         x-large
-        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
+        class="
+          white--text
+          justify-center
+          my-2 my-sm-0
+          mr-lg-4
+          flex-shrink-1 flex-sm-shrink-0
+        "
         @click="() => addStand()"
         >Zatwierdź</v-btn
       >
       <v-btn
+        id="cancel-button"
         color="warning"
         x-large
-        class="white--text justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0 order-last order-sm-first"
+        class="
+          white--text
+          justify-center
+          mr-lg-4
+          my-2 my-sm-0
+          flex-shrink-1 flex-sm-shrink-0
+          order-last order-sm-first
+        "
         @click="$router.go(-1)"
         >Wróć</v-btn
       >
@@ -60,8 +89,8 @@
             <p class="pa-2">Czy chcesz edytować załadunek?</p>
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text @click="dialog.value = false">Nie</v-btn>
-            <v-btn text @click="editLoad">Tak</v-btn>
+            <v-btn id="no-button" text @click="dialog.value = false">Nie</v-btn>
+            <v-btn id="yes-button" text @click="editLoad">Tak</v-btn>
           </v-card-actions>
         </v-card>
       </template>

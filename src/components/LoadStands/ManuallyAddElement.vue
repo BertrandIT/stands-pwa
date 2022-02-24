@@ -1,6 +1,7 @@
 <template>
   <v-container style="width: 100%" class="mx-0 pa-0">
     <v-text-field
+      id="add-element-input"
       v-model="elementCode"
       label="Kod okna"
       prepend-inner-icon="mdi-barcode"
@@ -10,7 +11,12 @@
       ref="barcodeinput"
     ></v-text-field>
     <v-row style="width: 100% ma-1">
-      <v-btn color="primary mx-2" large @click="addElement" class="white--text"
+      <v-btn
+        id="add-element-button"
+        color="primary mx-2"
+        large
+        @click="addElement"
+        class="white--text"
         ><template v-slot:default>
           <v-col>
             <p class="ma-0">Dodaj</p>
@@ -19,6 +25,7 @@
         </template></v-btn
       >
       <v-btn
+        id="other-load-button"
         color="primary mx-2"
         large
         @click="
@@ -31,6 +38,7 @@
         >Inne</v-btn
       >
       <v-btn
+        id="windows-load-button"
         color="primary mx-2"
         large
         @click="
@@ -57,6 +65,7 @@
             <v-radio-group v-model="selectedOrderId">
               <v-radio
                 v-for="(order, idx) in ordersToChoose"
+                :id="`radio-button-${idx}`"
                 :key="order.commande"
                 :label="`Zlecenie ${order.commande}/${order.chassis}`"
                 :value="idx"
@@ -64,7 +73,7 @@
             </v-radio-group>
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text @click="selectOrder">Zatwierdź</v-btn>
+            <v-btn id="submit-button" text @click="selectOrder">Zatwierdź</v-btn>
           </v-card-actions>
         </v-card>
       </template>

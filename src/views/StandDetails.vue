@@ -3,7 +3,7 @@
     <v-card-title>
       <span>Logi stojaka: {{ $route.params.standBarcode }}</span>
       <span class="ml-auto">
-        <v-btn small color="amber" link to="/viewHistory">Wróć</v-btn>
+        <v-btn id="cancel-button" small color="amber" link to="/viewHistory">Wróć</v-btn>
       </span>
     </v-card-title>
     <v-list v-if="logs.length">

@@ -3,6 +3,7 @@
     <v-row>
       <v-col>
         <v-text-field
+          id="admit-stand-date"
           label="Data przyjęcia"
           type="date"
           v-model="admitDate"
@@ -13,6 +14,7 @@
       </v-col>
       <v-col>
         <v-select
+          id="status-select"
           :items="statuses"
           label="Status stojaka"
           v-model="selected.action"
@@ -21,10 +23,14 @@
           dense
           hide-details
           style="min-width: 160px"
-        ></v-select>
+          ><template #item="{ item }"
+            ><p :id="item.text">{{ item.text }}</p></template
+          ></v-select
+        >
       </v-col>
       <v-col>
         <v-select
+          id="localization-select"
           :items="localizations"
           label="Lokalizacja"
           v-model="selected.localization"
@@ -33,10 +39,14 @@
           dense
           hide-details
           style="min-width: 160px"
-        ></v-select>
+          ><template #item="{ item }"
+            ><p :id="item.text">{{ item.text }}</p></template
+          ></v-select
+        >
       </v-col>
       <v-col>
         <v-select
+          id="deadline-select"
           :items="deadlines"
           label="Deadline"
           v-model="selected.deadline"
@@ -45,10 +55,14 @@
           dense
           hide-details
           style="min-width: 160px"
-        ></v-select>
+          ><template #item="{ item }"
+            ><p :id="item.text">{{ item.text }}</p></template
+          ></v-select
+        >
       </v-col>
       <v-col>
         <v-text-field
+          id="stand-barcode"
           label="Nr stojaka"
           v-model="barcode"
           dense
@@ -58,6 +72,7 @@
       </v-col>
       <v-col>
         <v-text-field
+          id="client"
           label="Klient"
           v-model="client"
           dense
@@ -68,7 +83,11 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-btn width="100%" color="primary" @click="filterStands"
+        <v-btn
+          id="filter-button"
+          width="100%"
+          color="primary"
+          @click="filterStands"
           >Filtruj</v-btn
         >
       </v-col>

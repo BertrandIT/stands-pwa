@@ -1,6 +1,7 @@
 <template>
   <v-container style="width: 100%" class="mx-0 pa-0">
     <v-text-field
+      id="add-stand-input"
       v-model="standBarcode"
       label="Kod stojaka"
       prepend-inner-icon="mdi-barcode"
@@ -11,7 +12,9 @@
       @click:clear="assignStandBarcode('')"
       ref="barcodeinput"
     ></v-text-field>
-    <v-btn color="primary" @click="addStand" class="white--text">Dodaj</v-btn>
+    <v-btn id="add-button" color="primary" @click="addStand" class="white--text"
+      >Dodaj</v-btn
+    >
   </v-container>
 </template>
 <script>

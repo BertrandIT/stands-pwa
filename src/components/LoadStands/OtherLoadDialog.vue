@@ -12,19 +12,37 @@
           <v-row>
             <v-col cols="12" sm="3">
               <v-select
+                id="order-select"
                 v-model="selectedOrder"
                 :items="items"
                 label="Zlecenie"
-              ></v-select>
+                ><template #item="{ item }"
+                  ><p :id="item">{{ item }}</p></template
+                ></v-select
+              >
             </v-col>
             <v-col v-if="selectedOrder !== 'ALU'" cols="12" sm="2">
-              <v-text-field type="numeric" v-model="year" label="Rok" />
+              <v-text-field
+                id="year-input"
+                type="numeric"
+                v-model="year"
+                label="Rok"
+              />
             </v-col>
             <v-col cols="12" :sm="selectedOrder !== 'ALU' ? 4 : 5">
-              <v-text-field v-model="order" label="Reszta zlecenia" />
+              <v-text-field
+                id="order-input"
+                v-model="order"
+                label="Reszta zlecenia"
+              />
             </v-col>
             <v-col cols="12" :sm="selectedOrder !== 'ALU' ? 3 : 4">
-              <v-text-field type="numeric" v-model="chassis" label="Pozycja" />
+              <v-text-field
+                id="chassis-input"
+                type="numeric"
+                v-model="chassis"
+                label="Pozycja"
+              />
             </v-col>
           </v-row>
           <v-text-field
@@ -33,8 +51,12 @@
           />
         </v-card-text>
         <v-card-actions class="justify-end">
-          <v-btn text @click="closeDialog">Anuluj</v-btn>
-          <v-btn text @click="selectOrder">Zatwierdź</v-btn>
+          <v-btn id="dialog-cancel-button" text @click="closeDialog"
+            >Anuluj</v-btn
+          >
+          <v-btn id="dialog-submit-button" text @click="selectOrder"
+            >Zatwierdź</v-btn
+          >
         </v-card-actions>
       </v-card>
     </template>
