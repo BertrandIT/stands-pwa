@@ -1,14 +1,5 @@
 <template>
   <v-container fluid class="fill-height align-start">
-    <v-alert
-      :value="alert.trigger"
-      :type="alert.type"
-      dismissible
-      style="position: absolute; z-index: 4"
-      transition="slide-x-transition"
-    >
-      {{ alert.msg }}
-    </v-alert>
     <v-row class="fill-height">
       <v-col>
         <choose-stand-data
@@ -35,9 +26,6 @@ export default {
       scanning: false,
       action: 0,
       standsData: {},
-      alert: {
-        trigger: false,
-      },
     };
   },
   methods: {
@@ -50,12 +38,10 @@ export default {
         this.action = action;
         this.assignStandsData(this.standsData);
       } else {
-        this.alert.msg = "Nie podano lokalizacji lub dostawcy";
-        this.alert.type = "error";
-        this.alert.trigger = true;
-        setTimeout(() => {
-          this.alert.trigger = false;
-        }, 3000);
+        this.$root.manageAlert({
+          text: "Nie podano lokalizacji lub dostawcy",
+          type: "error",
+        });
       }
     },
   },

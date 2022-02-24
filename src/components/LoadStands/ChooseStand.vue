@@ -9,7 +9,7 @@
     </p>
     <p class="text-center text-subtitle-1 mt-4 text-uppercase">Podaj stojak</p>
     <v-row>
-      <code-scanner @decode="onDecode" v-if="scanning" />
+      <code-scanner @decode="addStand" v-if="scanning" />
       <v-col v-else>
         <v-text-field
           v-model="standBarcode"
@@ -57,8 +57,9 @@ export default {
     return { standBarcode: "", scanning: false };
   },
   methods: {
-    // addStand(barcode = this.standBarcode) {
-    // }
+    addStand(barcode = this.standBarcode) {
+      return barcode;
+    },
   },
 };
 </script>

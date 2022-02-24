@@ -1,14 +1,5 @@
 <template>
   <v-container fluid>
-    <v-alert
-      :value="alert.trigger"
-      :type="alert.type"
-      dismissible
-      style="position: absolute; z-index: 4"
-      transition="slide-x-transition"
-    >
-      {{ alert.msg }}
-    </v-alert>
     <code-scanner @decode="onDecode" v-if="scanning" />
     <div v-else>
       <p class="text-h5 mt-4 font-weight-bold text-uppercase">
@@ -52,6 +43,9 @@
         >Wróć</v-btn
       >
     </v-row>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="50"></v-progress-circular>
+    </v-overlay>
   </v-container>
 </template>
 
@@ -76,10 +70,8 @@ export default {
   data() {
     return {
       scanned: false,
-      alert: {
-        trigger: false,
-      },
       scanning: false,
+      overlay: false,
     };
   },
   computed: {
@@ -101,24 +93,29 @@ export default {
           ? decodedText.split(":")[1].trim()
           : decodedText.trim().toUpperCase();
         if (this.stands.includes(standBarcode)) {
-          await this.triggerAlert(
-            `Stojak ${this.standBarcode} został już dodany`,
-            "warning",
-            1500
-          );
-          this.scanned = false;
+          this.$root.manageAlert({
+            text: `Stojak ${this.standBarcode} został już dodany`,
+            type: "warning",
+            time: 1500,
+            callback: () => {
+              this.scanned = false;
+            },
+          });
         } else {
           this.assignStands([...this.stands, standBarcode]);
-          await this.triggerAlert(
-            `Dodano stojak ${this.standBarcode}`,
-            "success",
-            1500
-          );
-          this.scanned = false;
+          this.$root.manageAlert({
+            text: `Dodano stojak ${this.standBarcode}`,
+            type: "success",
+            time: 1500,
+            callback: () => {
+              this.scanned = false;
+            },
+          });
         }
       }
     },
     async saveStands() {
+      this.overlay = true;
       await axios
         .post("api/savestands", {
           ...this.standsData,
@@ -126,13 +123,19 @@ export default {
           user: "admin",
         })
         .then(() => {
-          this.triggerAlert("Pomyślnie dodano stojaki", "success");
+          this.assignStands([]);
+          this.overlay = false;
+          this.$root.manageAlert({
+            text: "Pomyślnie dodano stojaki",
+            type: "success",
+          });
         })
         .catch(() => {
-          this.triggerAlert(
-            "Coś poszło nie tak skontaktuj się z działem IT",
-            "error"
-          );
+          this.overlay = false;
+          this.$root.manageAlert({
+            text: "Coś poszło nie tak skontaktuj się z działem IT",
+            type: "error",
+          });
         });
     },
     checkSave() {
@@ -141,16 +144,6 @@ export default {
       } else {
         this.saveStands();
       }
-    },
-    triggerAlert(msg, type, time = 3000) {
-      return new Promise(() => {
-        this.alert.msg = msg;
-        this.alert.type = type;
-        this.alert.trigger = true;
-        setTimeout(() => {
-          this.alert.trigger = false;
-        }, time);
-      });
     },
   },
 };
