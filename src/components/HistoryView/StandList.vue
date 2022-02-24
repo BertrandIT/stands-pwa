@@ -13,8 +13,8 @@
     <v-virtual-scroll
       width="100%"
       :items="stands"
-      item-height="40"
-      :height="$root.windowHeight - 230"
+      item-height="45"
+      :height="$root.windowHeight - 285"
     >
       <template v-slot="{ item }">
         <v-list-item>

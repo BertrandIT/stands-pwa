@@ -21,6 +21,7 @@
             @click="toggleSelectItem(item.id)"
             :class="getColor(item.id)"
             class="my-1"
+            :id="`select-stand-item-${item.id}`"
           >
             <v-card-title class="d-flex justify-space-between py-2">
               <span
@@ -39,8 +40,11 @@
       </v-list>
     </v-card-text>
     <v-card-actions>
-      <v-btn @click="cancel">Anuluj</v-btn>
-      <v-btn class="ml-auto" @click="moveItemsToNewStand"
+      <v-btn @click="cancel" id="cancel-edit-stand-items">Anuluj</v-btn>
+      <v-btn
+        class="ml-auto"
+        @click="moveItemsToNewStand"
+        id="save-edit-stand-items"
         >Przenieś na nowy stojak</v-btn
       >
     </v-card-actions>

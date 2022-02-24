@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-list width="100%" :height="$root.windowHeight - 230">
+    <v-list
+      width="100%"
+      :max-height="$root.windowHeight - 230"
+      style="overflow-y: scroll"
+    >
       <v-list-item v-for="(item, index) of stands" :key="index">
         <v-list-item-content>{{ item.standBarcode }}</v-list-item-content>
         <v-card
@@ -8,6 +12,7 @@
           @click="toggleSelectStand(item.windowStandId, item.standBarcode)"
           :class="getColor(item.windowStandId)"
           class="my-1"
+          :id="`select-card-${item.windowStandId}`"
         >
           <v-card-title class="d-flex justify-space-between py-2">
             <span
@@ -27,7 +32,13 @@
             </div>
           </v-card-text>
           <v-card-actions>
-            <v-btn class="ml-auto" small @click="editStand(item)">Edytuj</v-btn>
+            <v-btn
+              class="ml-auto"
+              small
+              @click="editStand(item)"
+              id="edit-stand"
+              >Edytuj</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-list-item>

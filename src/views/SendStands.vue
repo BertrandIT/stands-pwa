@@ -3,6 +3,7 @@
     <v-row>
       <v-col>
         <v-text-field
+          id="send-stands-search"
           v-model="search"
           label="Szukaj po kliencie, nr stojaka lub zleceniu"
         >
@@ -12,6 +13,20 @@
     <v-row>
       <v-col>
         <stand-list :stands="filteredStands"></stand-list>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="d-flex">
+        <v-btn color="warning" @click="cancel" id="cancel-send-stands"
+          >Anuluj</v-btn
+        >
+        <v-btn
+          class="ml-auto"
+          color="success"
+          @click="sendSelectedStands"
+          id="send-stands"
+          >Wyślij zaznaczone</v-btn
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -55,6 +70,14 @@ export default {
     async getStandsReadyToGo() {
       const res = await axios.get("/api/standsReadyToGo");
       this.stands = res.data;
+    },
+    sendSelectedStands() {
+      console.log("sendStands");
+    },
+    cancel() {
+      this.stands = [];
+      this.search = "";
+      this.$router.go(-1);
     },
   },
 };
