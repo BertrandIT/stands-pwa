@@ -33,6 +33,7 @@
         <v-select
           id="localization-select"
           :items="localizations"
+          id="lokalizacja"
           label="Lokalizacja"
           v-model="selected.localization"
           item-text="text"
