@@ -76,7 +76,7 @@ export default {
     };
   },
   methods: {
-    toggleSelectStand(standId, standBarcode) {
+    toggleSelectStand(standId) {
       if (this.editDialog.windowStandId !== standId) {
         const isStandSelectedIndex = this.selectedStands.findIndex(
           (item) => item === standId
