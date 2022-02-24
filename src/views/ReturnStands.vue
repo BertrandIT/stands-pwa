@@ -11,10 +11,15 @@
           @keydown.enter="addStand"
           hide-details
           ref="returnstand"
+          id="return-stand-barcode"
         ></v-text-field>
       </v-col>
       <v-col>
-        <v-btn color="primary" @click="addStand" class="white--text"
+        <v-btn
+          color="primary"
+          @click="addStand"
+          class="white--text"
+          id="add-return-stand"
           >Dodaj</v-btn
         >
       </v-col>
@@ -29,8 +34,10 @@
     </v-row>
     <v-row>
       <v-col class="d-flex">
-        <v-btn color="warning" @click="cancel">Anuluj</v-btn>
-        <v-btn class="ml-auto" color="success" @click="save">Zapisz</v-btn>
+        <v-btn color="warning" @click="cancel" id="cancel-return">Anuluj</v-btn>
+        <v-btn class="ml-auto" color="success" @click="save" id="save-return"
+          >Zapisz</v-btn
+        >
       </v-col>
     </v-row>
   </v-container>

@@ -17,7 +17,12 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-btn x-large @click="deleteStand(item)" icon>
+            <v-btn
+              x-large
+              @click="deleteStand(item)"
+              icon
+              id="${delete-from-return-${item}}"
+            >
               <v-icon color="red lighten-1">mdi-delete-outline</v-icon>
             </v-btn>
           </v-list-item-action>
