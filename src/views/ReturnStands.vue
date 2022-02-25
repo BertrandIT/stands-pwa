@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid>
-    <v-row>
+  <v-container fluid class="mt-5">
+    <v-row class="mt-5">
       <v-col cols="8">
         <v-text-field
           v-model="standBarcode"
@@ -46,6 +46,7 @@
 <script>
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
 import checkStand from "@/mixins/checkStand";
+import axios from "@/axios";
 
 export default {
   mixins: [checkStand],
@@ -83,14 +84,28 @@ export default {
       this.reset();
       this.$router.go(-1);
     },
-    save() {
+    async save() {
       if (this.stands.length) {
-        // wyślij stojaki backendTask
-        this.$root.manageAlert({
-          text: "Zwrócono zeskanowane stojaki",
-          type: "info",
-          callback: () => this.cancel(),
-        });
+        const stands = this.stands.map((stand) => stand.id);
+        try {
+          await axios.post("/api/returnStandsToSupplier", {
+            user: "admin",
+            stands,
+          });
+          // user z backendu backendTask
+          this.$root.manageAlert({
+            text: "Zwrócono zeskanowane stojaki",
+            type: "info",
+            callback: () => this.reset(),
+          });
+        } catch (error) {
+          console.log(error);
+          this.$root.manageAlert({
+            text: "Coś poszło nie tak. Zmiany nie zostały zapisane. Skontaktuj się z działem IT.",
+            type: "error",
+            callback: () => this.reset(),
+          });
+        }
       } else {
         this.$root.manageAlert({
           text: "Nie zeskanowano żadnego stojaka",

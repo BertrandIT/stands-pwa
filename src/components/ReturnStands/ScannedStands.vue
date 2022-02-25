@@ -1,11 +1,11 @@
 <template>
   <v-container style="width: 100%" class="mx-0 pa-0">
-    <v-card-subtitle>Zeskanowane stojaki</v-card-subtitle>
+    <v-card-subtitle class="mb-0 pb-0">Zeskanowane stojaki</v-card-subtitle>
     <v-virtual-scroll
       width="100%"
       :items="stands"
       item-height="40"
-      :height="$root.windowHeight - 255"
+      :height="$root.windowHeight - 295"
     >
       <template v-slot:default="{ item, index }">
         <v-list-item :key="item.id">

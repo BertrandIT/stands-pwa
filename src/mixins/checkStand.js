@@ -16,6 +16,7 @@ export default {
             this.$root.manageAlert({
               text: `Pomyślnie załadowano stojak`,
               type: "info",
+              time: 1500,
             });
             return res.data;
           }
