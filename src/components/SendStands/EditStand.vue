@@ -62,6 +62,7 @@
 </template>
 <script>
 import checkStand from "@/mixins/checkStand";
+import axios from "@/axios";
 export default {
   mixins: [checkStand],
   props: {
@@ -108,10 +109,19 @@ export default {
     getColor(id) {
       return this.selectedItems.includes(id) ? "blue lighten-1" : "white";
     },
-    moveItemsToNewStand() {
+    async moveItemsToNewStand() {
       if (this.newStand) {
-        // backendTask
-        this.closeDialog();
+        // backendTask ger user
+        const items = this.items.filter((item) =>
+          this.selectedItems.includes(item.id)
+        );
+        await axios.post("/api/relocateItems", {
+          user: "admin",
+          newStand: this.newStand,
+          oldStandId: this.windowStandId,
+          items,
+        });
+        this.cancel(true);
       }
     },
     resetStand() {
@@ -119,10 +129,10 @@ export default {
       this.newStandBarcode = "";
       this.$refs.newstand.focus();
     },
-    cancel() {
+    cancel(reloadStands = null) {
       this.resetStand();
       this.selectedItems = [];
-      this.closeDialog();
+      this.closeDialog(reloadStands);
     },
   },
 };

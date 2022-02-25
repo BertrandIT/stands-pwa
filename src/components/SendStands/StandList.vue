@@ -59,7 +59,10 @@ import axios from "@/axios";
 
 export default {
   components: { EditStand },
-  props: { stands: { type: Array, required: true } },
+  props: {
+    stands: { type: Array, required: true },
+    getStands: { type: Function, required: true },
+  },
   data() {
     return {
       selectedStands: [],
@@ -109,13 +112,16 @@ export default {
       this.editDialog.items = await this.getStandItems(windowStandId);
       this.editDialog.visibility = true;
     },
-    closeDialog() {
+    async closeDialog(retrieveStands = null) {
       this.editDialog = {
         visibility: false,
         windowStandId: 0,
         standBarcode: "",
         items: [],
       };
+      if (retrieveStands) {
+        await this.getStands();
+      }
     },
   },
 };

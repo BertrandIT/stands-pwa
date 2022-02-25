@@ -95,7 +95,7 @@ export default {
           // user z backendu backendTask
           this.$root.manageAlert({
             text: "Zwrócono zeskanowane stojaki",
-            type: "info",
+            type: "success",
             callback: () => this.reset(),
           });
         } catch (error) {

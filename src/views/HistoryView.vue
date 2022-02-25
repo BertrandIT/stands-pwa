@@ -1,6 +1,6 @@
 <template>
   <div class="history-view">
-    <filters :sendFiltersToParent="getFilters"></filters>
+    <filters-section :sendFiltersToParent="getFilters"></filters-section>
     <stand-list :stands="filteredStands"></stand-list>
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="50"></v-progress-circular>
@@ -8,12 +8,12 @@
   </div>
 </template>
 <script>
-import Filters from "@/components/HistoryView/FiltersSection.vue";
+import FiltersSection from "@/components/HistoryView/FiltersSection.vue";
 import StandList from "@/components/HistoryView/StandList.vue";
 import axios from "@/axios";
 
 export default {
-  components: { Filters, StandList },
+  components: { FiltersSection, StandList },
   data() {
     return {
       stands: [],
@@ -44,8 +44,9 @@ export default {
                   .trim()
                   .includes(this.filters.barcode.toLowerCase().trim()) &&
                 passed;
-            } else if (filter === "client" && stand.name && stand.name.length) {
+            } else if (filter === "client") {
               passed =
+                stand.name &&
                 stand.name
                   .toLowerCase()
                   .trim()

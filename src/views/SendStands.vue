@@ -12,7 +12,10 @@
     </v-row>
     <v-row>
       <v-col>
-        <stand-list :stands="filteredStands"></stand-list>
+        <stand-list
+          :stands="filteredStands"
+          :getStands="getStandsReadyToGo"
+        ></stand-list>
       </v-col>
     </v-row>
     <v-row>
