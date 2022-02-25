@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid>
-    <v-row>
+  <v-container fluid class="mt-5">
+    <v-row class="mt-5">
       <v-col cols="8">
         <v-text-field
           v-model="standBarcode"
@@ -34,7 +34,7 @@
     </v-row>
     <v-row>
       <v-col class="d-flex">
-        <v-btn color="success" @click="cancel" id="cancel-return">Anuluj</v-btn>
+        <v-btn color="warning" @click="cancel" id="cancel-return">Anuluj</v-btn>
         <v-btn class="ml-auto" color="success" @click="save" id="save-return"
           >Zapisz</v-btn
         >
@@ -45,7 +45,11 @@
 
 <script>
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
+import checkStand from "@/mixins/checkStand";
+import axios from "@/axios";
+
 export default {
+  mixins: [checkStand],
   components: { ScannedStands },
   data() {
     return {
@@ -53,21 +57,23 @@ export default {
       stands: [],
     };
   },
+  mounted() {
+    this.$refs.returnstand.focus();
+  },
   methods: {
-    addStand() {
-      if (this.standBarcode) {
-        this.stands.push(this.standBarcode);
-        this.standBarcode = null;
-      } else {
-        this.$root.manageAlert({
-          text: "Nie podano barkodu stojaka",
-          type: "error",
-        });
+    async addStand() {
+      const stand = await this.checkStand({
+        barcode: this.standBarcode,
+        notAllowedStatuses: ["Zwrócony"],
+      });
+      if (stand) {
+        this.stands.push(stand);
       }
+      this.standBarcode = null;
       this.$refs.returnstand.focus();
     },
-    deleteStand(stand) {
-      const standIndex = this.stands.findIndex((item) => item === stand);
+    deleteStand(standId) {
+      const standIndex = this.stands.findIndex((item) => item.id === standId);
       this.stands.splice(standIndex, 1);
     },
     reset() {
@@ -78,13 +84,28 @@ export default {
       this.reset();
       this.$router.go(-1);
     },
-    save() {
+    async save() {
       if (this.stands.length) {
-        this.$root.manageAlert({
-          text: "Zwrócono zeskanowane stojaki",
-          type: "info",
-          callback: () => this.cancel(),
-        });
+        const stands = this.stands.map((stand) => stand.id);
+        try {
+          await axios.post("/api/returnStandsToSupplier", {
+            user: "admin",
+            stands,
+          });
+          // user z backendu backendTask
+          this.$root.manageAlert({
+            text: "Zwrócono zeskanowane stojaki",
+            type: "success",
+            callback: () => this.reset(),
+          });
+        } catch (error) {
+          console.log(error);
+          this.$root.manageAlert({
+            text: "Coś poszło nie tak. Zmiany nie zostały zapisane. Skontaktuj się z działem IT.",
+            type: "error",
+            callback: () => this.reset(),
+          });
+        }
       } else {
         this.$root.manageAlert({
           text: "Nie zeskanowano żadnego stojaka",
