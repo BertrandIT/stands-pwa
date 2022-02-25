@@ -111,12 +111,11 @@ export default {
     },
     async moveItemsToNewStand() {
       if (this.newStand) {
-        // backendTask ger user
         const items = this.items.filter((item) =>
           this.selectedItems.includes(item.id)
         );
         await axios.post("/api/relocateItems", {
-          user: "admin",
+          user: this.$store.state.user.email,
           newStand: this.newStand,
           oldStandId: this.windowStandId,
           items,

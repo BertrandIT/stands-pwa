@@ -89,10 +89,9 @@ export default {
         const stands = this.stands.map((stand) => stand.id);
         try {
           await axios.post("/api/returnStandsToSupplier", {
-            user: "admin",
+            user: this.$store.state.user.email,
             stands,
           });
-          // user z backendu backendTask
           this.$root.manageAlert({
             text: "Zwrócono zeskanowane stojaki",
             type: "success",

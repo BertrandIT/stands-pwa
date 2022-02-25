@@ -153,7 +153,7 @@ export default {
           );
           console.log(stand);
           return {
-            user: "admin",
+            user: this.$store.state.user.email,
             windowStandId: stand.windowStandId,
             client: stand.client,
             base: stand.base === "" ? "8" : stand.base,
@@ -167,7 +167,6 @@ export default {
           text: "Wysłano wybrane stojaki.",
           type: "info",
         });
-        // popraw user backendTask
         // {sentStands: [{windowStandId, client, load_number, user, base(zamień "8" na "")}]}
       } else {
         this.$root.manageAlert({
