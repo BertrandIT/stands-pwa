@@ -60,6 +60,9 @@
         </v-card-actions>
       </v-card>
     </template>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="50"></v-progress-circular>
+    </v-overlay>
   </v-dialog>
 </template>
 <script>
@@ -73,6 +76,7 @@ export default {
   },
   data() {
     return {
+      overlay: false,
       selectedOrder: "",
       year: "",
       order: "",
@@ -110,16 +114,19 @@ export default {
   computed: {
     ...mapState({
       standLoad: (state) => state.standLoad,
+      user: (state) => state.user,
     }),
   },
   methods: {
     ...mapActions(["assignStandLoad"]),
     async selectOrder() {
+      this.overlay = true;
       if (
         this.selectedOrder === "ALU" &&
         this.order.length != 6 &&
         !this.order.includes("-")
       ) {
+        this.overlay = false;
         this.$root.manageAlert({
           text: "Zlecenia ALU powinny być w formacie XXX-XX",
           type: "warning",
@@ -152,6 +159,7 @@ export default {
           this.closeDialog();
         });
       } else {
+        this.overlay = false;
         this.$root.manageAlert({
           text: "Uzupełnij brakujące dane",
           type: "error",
@@ -172,9 +180,10 @@ export default {
                 base: response.data.base === "" ? "8" : response.data.base,
                 client: response.data.client,
                 description: data.description,
-                user: "admin",
+                user: this.user.email,
               },
             ]);
+            this.overlay = false;
             this.$root.manageAlert({
               text: `Dodano zlecenie ${data.commande}`,
               type: "success",
@@ -185,6 +194,7 @@ export default {
             this.chassis = "";
             this.description = "";
           } else {
+            this.overlay = false;
             this.$root.manageAlert({
               text: "Podane zlecenie jest nieprawidłowe",
               type: "error",

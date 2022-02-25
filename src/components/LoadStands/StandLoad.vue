@@ -10,25 +10,13 @@
     <manually-add-element @setDeliveryDate="(e) => (deliverydate = e)" />
     <elements-list />
     <v-row
-      class="
-        justify-lg-end
-        fill-height
-        justify-center justify-sm-space-around
-        flex-sm-row flex-column
-        align-sm-end align-center
-      "
+      class="justify-lg-end fill-height justify-center justify-sm-space-around flex-sm-row flex-column align-sm-end align-center"
     >
       <v-btn
         id="scanner-button"
         color="primary"
         x-large
-        class="
-          white--text
-          justify-center
-          my-2 my-sm-0
-          mr-lg-4
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="scanning = !scanning"
         >{{ scanning ? "Zakończ" : "Zeskanuj stojak" }}</v-btn
       >
@@ -36,13 +24,7 @@
         id="submit-button"
         color="success"
         x-large
-        class="
-          white--text
-          justify-center
-          my-2 my-sm-0
-          mr-lg-4
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="() => saveLoad()"
         >Zatwierdź</v-btn
       >
@@ -50,14 +32,7 @@
         id="cancel-button"
         color="warning"
         x-large
-        class="
-          white--text
-          justify-center
-          mr-lg-4
-          my-2 my-sm-0
-          flex-shrink-1 flex-sm-shrink-0
-          order-last order-sm-first
-        "
+        class="white--text justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0 order-last order-sm-first"
         @click="
           () => {
             $router.go(-1);
@@ -90,6 +65,7 @@ export default {
       standToLoad: (state) => state.standToLoad,
       standLoad: (state) => state.standLoad,
       deleted: (state) => state.deleted,
+      user: (state) => state.user,
     }),
   },
   methods: {
@@ -136,7 +112,7 @@ export default {
                     ? "8"
                     : response.data[0].winpro,
                 client: response.data[0].client,
-                user: "admin",
+                user: this.user.email,
               },
             ]);
             this.$root.manageAlert({
@@ -189,7 +165,7 @@ export default {
         .patch(`api/updateLoad/${this.standToLoad.id}`, {
           items: this.standLoad,
           deleted: this.deleted,
-          user: "admin",
+          user: this.user.email,
         })
         .then(() => {
           this.$root.manageAlert({

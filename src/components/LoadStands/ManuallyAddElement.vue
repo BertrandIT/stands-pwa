@@ -73,7 +73,9 @@
             </v-radio-group>
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn id="submit-button" text @click="selectOrder">Zatwierdź</v-btn>
+            <v-btn id="submit-button" text @click="selectOrder"
+              >Zatwierdź</v-btn
+            >
           </v-card-actions>
         </v-card>
       </template>
@@ -83,6 +85,9 @@
       :isWindow="isWindow"
       :closeDialog="() => (otherLoadDialog = false)"
     />
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="50"></v-progress-circular>
+    </v-overlay>
   </v-container>
 </template>
 <script>
@@ -101,11 +106,13 @@ export default {
       selectedOrderId: 0,
       otherLoadDialog: false,
       isWindow: false,
+      overlay: false,
     };
   },
   computed: {
     ...mapState({
       standLoad: (state) => state.standLoad,
+      user: (state) => state.user,
     }),
   },
   mounted() {
@@ -120,10 +127,12 @@ export default {
     },
     async addElement() {
       if (this.elementCode) {
+        this.overlay = true;
         let element = {
           barcode: this.elementCode.trim().toUpperCase(),
         };
         if (this.elementAlreadyAdded(element.barcode)) {
+          this.overlay = false;
           this.$root.manageAlert({
             text: `Okno ${this.elementCode} zostało już dodane`,
             type: "warning",
@@ -160,9 +169,10 @@ export default {
                     ? "8"
                     : response.data[0].winpro,
                 client: response.data[0].client,
-                user: "admin",
+                user: this.user.email,
               },
             ]);
+            this.overlay = false;
             this.$root.manageAlert({
               text: `Dodano okno ${this.elementCode} do załadunku`,
               type: "success",
@@ -170,10 +180,12 @@ export default {
             this.elementCode = "";
             this.$refs.barcodeinput.focus();
           } else if (response.data.length > 1) {
+            this.overlay = false;
             this.getDeliveryDate(barcode);
             this.ordersToChoose = response.data;
             this.chooseOrderDialog = true;
           } else {
+            this.overlay = false;
             this.$root.manageAlert({
               text: `Podany kod: ${this.elementCode} jest niepoprawny. Sprawdź poprawność kodu i spróbuj ponownie`,
               type: "error",
@@ -187,7 +199,7 @@ export default {
         {
           barcode: this.elementCode,
           ...this.ordersToChoose[this.selectedOrderId],
-          user: "admin",
+          user: this.user.email,
         },
       ]);
       this.$root.manageAlert({
