@@ -10,28 +10,14 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col>
-        <stand-list
-          :stands="filteredStands"
-          :getStands="getStandsReadyToGo"
-        ></stand-list>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="d-flex">
-        <v-btn color="warning" @click="cancel" id="cancel-send-stands"
-          >Anuluj</v-btn
-        >
-        <v-btn
-          class="ml-auto"
-          color="success"
-          @click="sendSelectedStands"
-          id="send-stands"
-          >Wyślij zaznaczone</v-btn
-        >
-      </v-col>
-    </v-row>
+    <stand-list
+      :stands="filteredStands"
+      :getStands="getStandsReadyToGo"
+      :cancelSendStands="cancel"
+    ></stand-list>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="50"></v-progress-circular>
+    </v-overlay>
   </v-container>
 </template>
 <script>
@@ -42,6 +28,7 @@ export default {
   components: { StandList },
   data() {
     return {
+      overlay: false,
       stands: [],
       search: "",
     };
@@ -70,12 +57,10 @@ export default {
   },
   methods: {
     async getStandsReadyToGo() {
+      this.overlay = true;
       const res = await axios.get("/api/standsReadyToGo");
       this.stands = res.data;
-    },
-    sendSelectedStands() {
-      // wyślij stojaki backendTask
-      console.log("sendStands");
+      this.overlay = false;
     },
     cancel() {
       this.stands = [];

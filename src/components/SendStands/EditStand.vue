@@ -122,6 +122,12 @@ export default {
           items,
         });
         this.cancel(true);
+      } else {
+        this.$root.manageAlert({
+          text: "Nie wybrano stojaka, na który mają zostać przełożone wybrane elementy.",
+          type: "error",
+        });
+        this.$refs.newstand.focus();
       }
     },
     resetStand() {
