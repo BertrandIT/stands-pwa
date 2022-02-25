@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row v-if="user.email">
       <v-col
         v-for="(tab, idx) of tabs"
         :key="idx"
@@ -14,16 +14,30 @@
         </router-link></v-col
       >
     </v-row>
+    <v-row v-else>
+      <v-col class="flex-column d-flex">
+        <v-text-field label="Login" v-model="userlogin"></v-text-field>
+        <v-text-field
+          label="Hasło"
+          type="password"
+          v-model="password"
+        ></v-text-field>
+        <v-btn x-large color="success" @click="login">Zaloguj</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import axios from "@/axios";
+import { mapState, mapActions } from "vuex";
 // @ is an alias to /src
-
 export default {
   name: "HomeView",
   data() {
     return {
+      userlogin: "",
+      password: "",
       tabs: [
         { text: "Przyjęcie stojaków", link: "/admitStands" },
         { text: "Załadunek stojaków", link: "/loadStands" },
@@ -32,6 +46,38 @@ export default {
         { text: "Przegląd historii", link: "/viewHistory" },
       ],
     };
+  },
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
+  methods: {
+    ...mapActions(["loginUser"]),
+    async login() {
+      await axios
+        .get(
+          "api/usershow/" + this.userlogin.toUpperCase() + "/" + this.password
+        )
+        .then(async (response) => {
+          if (response.data.user == null) {
+            this.$root.manageAlert({
+              text: "Błędny login",
+              type: "error",
+            });
+          } else {
+            this.loginUser(response.data.user);
+            this.userlogin = "";
+            this.password = "";
+          }
+        })
+        .catch(() => {
+          this.$root.manageAlert({
+            text: "Sprawdź połączenie z Internetem, bądź skontaktuj się z działem IT",
+            type: "error",
+          });
+        });
+    },
   },
 };
 </script>

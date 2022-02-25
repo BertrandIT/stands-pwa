@@ -11,6 +11,7 @@ export default new Vuex.Store({
     stands: [],
     standLoad: [],
     deleted: [],
+    user: {},
   },
   getters: {},
   mutations: {
@@ -44,6 +45,9 @@ export default new Vuex.Store({
     clearStandToLoad(state) {
       state.standToLoad = {};
     },
+    setUserData(state, data) {
+      state.user = data;
+    },
   },
   actions: {
     assignStandsData({ commit }, data) {
@@ -64,6 +68,9 @@ export default new Vuex.Store({
     },
     assignDeleted({ commit }, data) {
       commit("setDeleted", data);
+    },
+    loginUser({ commit }, data) {
+      commit("setUserData", data);
     },
     clearStandToLoad({ commit }) {
       commit("clearStandToLoad");
