@@ -83,6 +83,7 @@ export default {
       standsData: (state) => state.standsData,
       stands: (state) => state.stands,
       standBarcode: (state) => state.standBarcode,
+      user: (state) => state.user,
     }),
   },
   created() {
@@ -124,7 +125,7 @@ export default {
         .post("api/savestands", {
           ...this.standsData,
           windowStands: this.stands.map((item) => ({ barcode: item })),
-          user: "admin",
+          user: this.user.email,
         })
         .then(() => {
           this.assignStands([]);
