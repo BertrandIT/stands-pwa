@@ -11,7 +11,14 @@
         hide-details
         ref="newstand"
         id="new-stand-barcode"
+        :disabled="!!newStand"
       ></v-text-field>
+      <v-btn @click="addStand" small color="primary" v-if="!newStand"
+        >Pobierz</v-btn
+      >
+      <v-btn v-else @click="resetStand" color="warning" small
+        >Resetuj Stojak</v-btn
+      >
     </v-card-title>
     <v-card-text>
       <v-list>
@@ -40,18 +47,23 @@
       </v-list>
     </v-card-text>
     <v-card-actions>
-      <v-btn @click="cancel" id="cancel-edit-stand-items">Anuluj</v-btn>
+      <v-btn @click="cancel" color="warning" id="cancel-edit-stand-items"
+        >Anuluj</v-btn
+      >
       <v-btn
         class="ml-auto"
         @click="moveItemsToNewStand"
         id="save-edit-stand-items"
+        color="success"
         >Przenieś na nowy stojak</v-btn
       >
     </v-card-actions>
   </v-card>
 </template>
 <script>
+import checkStand from "@/mixins/checkStand";
 export default {
+  mixins: [checkStand],
   props: {
     windowStandId: { type: Number, required: true },
     standBarcode: { type: String, required: true },
@@ -67,11 +79,21 @@ export default {
         { text: "Klient", value: "name" },
       ],
       newStandBarcode: "",
+      newStand: null,
     };
   },
   methods: {
-    addStand() {
-      //check if stand exists and is free to load
+    async addStand() {
+      const stand = await this.checkStand({
+        barcode: this.newStandBarcode,
+        notAllowedStatuses: ["Zwrócony", "Wysłany"],
+      });
+      if (stand) {
+        this.newStand = stand;
+      } else {
+        this.newStandBarcode = "";
+        this.$refs.newstand.focus();
+      }
     },
     toggleSelectItem(id) {
       const isItemSelectedIndex = this.selectedItems.findIndex(
@@ -87,10 +109,18 @@ export default {
       return this.selectedItems.includes(id) ? "blue lighten-1" : "white";
     },
     moveItemsToNewStand() {
-      this.closeDialog();
+      if (this.newStand) {
+        // backendTask
+        this.closeDialog();
+      }
+    },
+    resetStand() {
+      this.newStand = null;
+      this.newStandBarcode = "";
+      this.$refs.newstand.focus();
     },
     cancel() {
-      this.newStandBarcode = "";
+      this.resetStand();
       this.selectedItems = [];
       this.closeDialog();
     },

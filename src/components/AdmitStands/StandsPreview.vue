@@ -9,26 +9,14 @@
       <stands-list />
     </div>
     <v-row
-      class="
-        mt-10
-        justify-lg-end
-        fill-height
-        justify-center justify-sm-space-around
-        align-sm-end align-center
-      "
+      class="mt-10 justify-lg-end fill-height justify-center justify-sm-space-around align-sm-end align-center"
     >
       <v-btn
         id="save-button"
         v-if="!scanning"
         color="primary"
         x-large
-        class="
-          white--text
-          justify-center
-          my-2 my-sm-0
-          mr-lg-4
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="checkSave"
         >Zapisz</v-btn
       >
@@ -37,13 +25,7 @@
         v-if="scanning"
         color="primary"
         x-large
-        class="
-          white--text
-          justify-center
-          my-2 my-sm-0
-          mr-lg-4
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="scanning = false"
         >Zakończ</v-btn
       >
@@ -52,13 +34,7 @@
         v-else
         color="primary"
         x-large
-        class="
-          white--text
-          justify-center
-          my-2 my-sm-0
-          mr-lg-4
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="scanning = true"
         >Zeskanuj kod</v-btn
       >
@@ -66,14 +42,7 @@
         id="cancel-button"
         color="warning"
         x-large
-        class="
-          white--text
-          order-last order-sm-first
-          justify-center
-          mr-lg-4
-          my-2 my-sm-0
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text order-last order-sm-first justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0"
         @click="$router.go(-1)"
         >Wróć</v-btn
       >

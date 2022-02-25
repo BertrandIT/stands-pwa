@@ -34,7 +34,7 @@
     </v-row>
     <v-row>
       <v-col class="d-flex">
-        <v-btn color="success" @click="cancel" id="cancel-return">Anuluj</v-btn>
+        <v-btn color="warning" @click="cancel" id="cancel-return">Anuluj</v-btn>
         <v-btn class="ml-auto" color="success" @click="save" id="save-return"
           >Zapisz</v-btn
         >
@@ -45,7 +45,10 @@
 
 <script>
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
+import checkStand from "@/mixins/checkStand";
+
 export default {
+  mixins: [checkStand],
   components: { ScannedStands },
   data() {
     return {
@@ -53,21 +56,23 @@ export default {
       stands: [],
     };
   },
+  mounted() {
+    this.$refs.returnstand.focus();
+  },
   methods: {
-    addStand() {
-      if (this.standBarcode) {
-        this.stands.push(this.standBarcode);
-        this.standBarcode = null;
-      } else {
-        this.$root.manageAlert({
-          text: "Nie podano barkodu stojaka",
-          type: "error",
-        });
+    async addStand() {
+      const stand = await this.checkStand({
+        barcode: this.standBarcode,
+        notAllowedStatuses: ["Zwrócony"],
+      });
+      if (stand) {
+        this.stands.push(stand);
       }
+      this.standBarcode = null;
       this.$refs.returnstand.focus();
     },
-    deleteStand(stand) {
-      const standIndex = this.stands.findIndex((item) => item === stand);
+    deleteStand(standId) {
+      const standIndex = this.stands.findIndex((item) => item.id === standId);
       this.stands.splice(standIndex, 1);
     },
     reset() {
@@ -80,6 +85,7 @@ export default {
     },
     save() {
       if (this.stands.length) {
+        // wyślij stojaki backendTask
         this.$root.manageAlert({
           text: "Zwrócono zeskanowane stojaki",
           type: "info",

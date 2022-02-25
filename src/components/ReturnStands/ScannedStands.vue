@@ -5,21 +5,21 @@
       width="100%"
       :items="stands"
       item-height="40"
-      :height="$root.windowHeight - 250"
+      :height="$root.windowHeight - 255"
     >
       <template v-slot:default="{ item, index }">
-        <v-list-item :key="item">
+        <v-list-item :key="item.id">
           <v-list-item-content>
             <v-list-item-title
               class="text-h6 mt-4 font-weight-bold text-uppercase"
-              v-text="item"
+              v-text="item.barcode"
             ></v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-action>
             <v-btn
               x-large
-              @click="deleteStand(item)"
+              @click="deleteStand(item.id)"
               icon
               :id="`delete-from-return-${index}`"
             >

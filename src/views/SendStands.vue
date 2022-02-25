@@ -57,7 +57,6 @@ export default {
             stand.items && stand.items.toLowerCase().includes(search);
           return checkBarcode || checkClientName || checkItems;
         });
-        // filtruj po zamówieniu
         // edytuj stojak zaznacz elementy - pobierz nowy stojak - sprawdź czy nie wysłany/zwrócony - przerzuć
       }
       return this.stands;
@@ -72,6 +71,7 @@ export default {
       this.stands = res.data;
     },
     sendSelectedStands() {
+      // wyślij stojaki backendTask
       console.log("sendStands");
     },
     cancel() {
