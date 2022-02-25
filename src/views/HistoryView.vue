@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import Filters from "@/components/HistoryView/Filters.vue";
+import Filters from "@/components/HistoryView/FiltersSection.vue";
 import StandList from "@/components/HistoryView/StandList.vue";
 import axios from "@/axios";
 
