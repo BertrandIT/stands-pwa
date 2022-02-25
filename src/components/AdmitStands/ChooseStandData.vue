@@ -50,25 +50,13 @@
       </v-col>
     </v-row>
     <v-row
-      class="
-        justify-lg-end
-        fill-height
-        justify-center justify-sm-space-around
-        flex-sm-row flex-column
-        align-sm-end align-center
-      "
+      class="justify-lg-end fill-height justify-center justify-sm-space-around flex-sm-row flex-column align-sm-end align-center"
     >
       <v-btn
         id="manually-add-stand"
         color="primary"
         x-large
-        class="
-          white--text
-          justify-center
-          my-2 my-sm-0
-          mr-lg-4
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="$emit('changeAction', 1)"
         >Wprowadź kod</v-btn
       >
@@ -76,13 +64,7 @@
         id="scan-stand"
         color="primary"
         x-large
-        class="
-          white--text
-          justify-center
-          mr-lg-4
-          my-2 my-sm-0
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0"
         @click="$emit('changeAction', 2)"
         >Zeskanuj kod</v-btn
       >
@@ -90,14 +72,7 @@
         color="warning"
         id="cancel"
         x-large
-        class="
-          white--text
-          order-last order-sm-first
-          justify-center
-          mr-lg-4
-          my-2 my-sm-0
-          flex-shrink-1 flex-sm-shrink-0
-        "
+        class="white--text order-last order-sm-first justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0"
         @click="$router.go(-1)"
         >Wróć</v-btn
       >
