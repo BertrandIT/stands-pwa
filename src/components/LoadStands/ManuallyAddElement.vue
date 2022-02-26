@@ -154,7 +154,7 @@ export default {
     },
     async getWholeOrderForBarcode(barcode) {
       await axios
-        .get(`/findbarcodeinallbases?barcode=${barcode}`)
+        .get(`/api/findBarcodeInAllBasesPwa?barcode=${barcode}`)
         .then((response) => {
           if (response.data.length == 1) {
             this.getDeliveryDate(barcode);
