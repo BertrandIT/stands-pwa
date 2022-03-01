@@ -21,6 +21,7 @@
           label="Hasło"
           type="password"
           v-model="password"
+          @keydown.enter="() => login()"
         ></v-text-field>
         <v-btn x-large color="success" @click="login">Zaloguj</v-btn>
       </v-col>
@@ -52,6 +53,11 @@ export default {
       user: (state) => state.user,
     }),
   },
+  async created() {
+    await axios.get("api/savestands").then((res) => {
+      console.log(res);
+    });
+  },
   methods: {
     ...mapActions(["loginUser"]),
     async login() {
@@ -67,6 +73,7 @@ export default {
             });
           } else {
             this.loginUser(response.data.user);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
             this.userlogin = "";
             this.password = "";
           }

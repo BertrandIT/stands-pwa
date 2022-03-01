@@ -19,6 +19,7 @@
 
 <script>
 import MainNav from "./components/MainNav.vue";
+import { mapState, mapActions } from "vuex";
 
 export default {
   components: { MainNav },
@@ -26,6 +27,20 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
+  created() {
+    if (localStorage.getItem("user")) {
+      this.loginUser(JSON.parse(localStorage.getItem("user")));
+    } else if (!this.user.email) {
+      this.$router.push("/");
+    }
+  },
+  methods: {
+    ...mapActions(["loginUser"]),
+  },
 };
 </script>

@@ -24,6 +24,7 @@ export default {
     ...mapActions(["loginUser"]),
     logout() {
       this.loginUser({});
+      localStorage.removeItem("user");
     },
   },
 };
