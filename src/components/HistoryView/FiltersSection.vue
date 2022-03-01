@@ -16,7 +16,6 @@
         <v-select
           id="status-select"
           :items="statuses"
-          id="status"
           label="Status stojaka"
           v-model="selected.action"
           item-text="text"
@@ -33,7 +32,6 @@
         <v-select
           id="localization-select"
           :items="localizations"
-          id="lokalizacja"
           label="Lokalizacja"
           v-model="selected.localization"
           item-text="text"
