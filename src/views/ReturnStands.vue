@@ -63,7 +63,9 @@ export default {
   methods: {
     async addStand() {
       const stand = await this.checkStand({
-        barcode: this.standBarcode,
+        barcode: (this.standBarcode = this.standBarcode.includes("STAND:")
+          ? this.standBarcode.split(":")[1].trim()
+          : this.standBarcode.trim().toUpperCase()),
         notAllowedStatuses: ["Zwrócony"],
       });
       if (stand) {
