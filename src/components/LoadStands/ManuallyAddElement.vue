@@ -192,6 +192,13 @@ export default {
               type: "error",
             });
           }
+        })
+        .catch(() => {
+          this.overlay = false;
+          this.$root.manageAlert({
+            text: "Coś poszło nie tak. Sprawdź poprawność kodu lub skontaktuj się z działem IT",
+            type: "error",
+          });
         });
     },
     selectOrder() {
