@@ -60,14 +60,14 @@
         @click="$emit('changeAction', 1)"
         >Wprowadź kod</v-btn
       >
-      <v-btn
+      <!-- <v-btn
         id="scan-stand"
         color="primary"
         x-large
         class="white--text justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0"
         @click="$emit('changeAction', 2)"
         >Zeskanuj kod</v-btn
-      >
+      > -->
       <v-btn
         color="warning"
         id="cancel"

@@ -53,11 +53,6 @@ export default {
       user: (state) => state.user,
     }),
   },
-  async created() {
-    await axios.get("api/savestands").then((res) => {
-      console.log(res);
-    });
-  },
   methods: {
     ...mapActions(["loginUser"]),
     async login() {

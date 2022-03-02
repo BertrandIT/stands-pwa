@@ -7,19 +7,22 @@
       Data dostawy: {{ deliverydate }}
     </p>
     <code-scanner v-if="scanning" @decode="addElement" />
-    <manually-add-element @setDeliveryDate="(e) => (deliverydate = e)" />
+    <manually-add-element
+      ref="addelement"
+      @setDeliveryDate="(e) => (deliverydate = e)"
+    />
     <elements-list />
     <v-row
       class="justify-lg-end fill-height justify-center justify-sm-space-around flex-sm-row flex-column align-sm-end align-center"
     >
-      <v-btn
+      <!-- <v-btn
         id="scanner-button"
         color="primary"
         x-large
         class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="scanning = !scanning"
         >{{ scanning ? "Zakończ" : "Zeskanuj stojak" }}</v-btn
-      >
+      > -->
       <v-btn
         id="submit-button"
         color="success"
@@ -66,6 +69,7 @@ export default {
       standLoad: (state) => state.standLoad,
       deleted: (state) => state.deleted,
       user: (state) => state.user,
+      elementBarcode: (state) => state.elementBarcode,
     }),
   },
   methods: {
@@ -134,7 +138,9 @@ export default {
         });
     },
     async saveLoad() {
-      if (this.standToLoad.wasEmpty) {
+      if (this.elementBarcode) {
+        this.$refs.addelement.addElement();
+      } else if (this.standToLoad.wasEmpty) {
         await this.sendEmptyStand();
       } else {
         await this.editStandLoad();

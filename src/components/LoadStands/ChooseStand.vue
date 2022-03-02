@@ -25,14 +25,14 @@
     <v-row
       class="justify-lg-end fill-height justify-center justify-sm-space-around flex-sm-row flex-column align-sm-end align-center"
     >
-      <v-btn
+      <!-- <v-btn
         id="scanner-button"
         color="primary"
         x-large
         class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="scanning = !scanning"
         >{{ scanning ? "Zakończ" : "Zeskanuj stojak" }}</v-btn
-      >
+      > -->
       <v-btn
         id="submit-button"
         color="success"

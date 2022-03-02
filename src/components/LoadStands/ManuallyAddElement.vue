@@ -7,6 +7,7 @@
       prepend-inner-icon="mdi-barcode"
       class="mx-0"
       clearable
+      @change="(e) => assignElementBarcode(e)"
       @keydown.enter="addElement"
       ref="barcodeinput"
     ></v-text-field>
@@ -119,7 +120,7 @@ export default {
     this.$refs.barcodeinput.focus();
   },
   methods: {
-    ...mapActions(["assignStandLoad"]),
+    ...mapActions(["assignStandLoad", "assignElementBarcode"]),
     async getDeliveryDate(barcode) {
       await axios.get("api/deliveryDate/" + barcode).then((response) => {
         this.$emit("setDeliveryDate", response.data);

@@ -29,7 +29,7 @@
         @click="scanning = false"
         >Zakończ</v-btn
       >
-      <v-btn
+      <!-- <v-btn
         id="scan-stand-button"
         v-else
         color="primary"
@@ -37,13 +37,13 @@
         class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
         @click="scanning = true"
         >Zeskanuj kod</v-btn
-      >
+      > -->
       <v-btn
         id="cancel-button"
         color="warning"
         x-large
         class="white--text order-last order-sm-first justify-center mr-lg-4 my-2 my-sm-0 flex-shrink-1 flex-sm-shrink-0"
-        @click="$router.go(-1)"
+        @click="goBack"
         >Wróć</v-btn
       >
     </v-row>
@@ -146,9 +146,13 @@ export default {
     checkSave() {
       if (this.standBarcode) {
         this.$refs.addStand.addStand();
-      } else {
+      } else if (this.stands.length !== 0) {
         this.saveStands();
       }
+    },
+    goBack() {
+      this.$emit("changeAction", 0);
+      this.assignStands([]);
     },
   },
 };

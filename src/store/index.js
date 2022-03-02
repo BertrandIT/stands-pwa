@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     standsData: {},
     standBarcode: "",
+    elementBarcode: "",
     standToLoad: {},
     stands: [],
     standLoad: [],
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     setStandBarcode(state, data) {
       state.standBarcode = data;
+    },
+    setElementBarcode(state, data) {
+      state.elementBarcode = data;
     },
     setStandToLoad(state, { barcode, id, deadline, action, wasEmpty }) {
       state.standToLoad = {
@@ -59,6 +63,9 @@ export default new Vuex.Store({
     },
     assignStandBarcode({ commit }, data) {
       commit("setStandBarcode", data);
+    },
+    assignElementBarcode({ commit }, data) {
+      commit("setElementBarcode", data);
     },
     assignStandToLoad({ commit }, data) {
       commit("setStandToLoad", data);

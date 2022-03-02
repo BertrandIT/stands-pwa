@@ -7,7 +7,11 @@
           @changeAction="changeAction"
           @setData="setData"
         />
-        <stands-preview v-if="action !== 0" :action="action" />
+        <stands-preview
+          v-if="action !== 0"
+          @changeAction="changeAction"
+          :action="action"
+        />
       </v-col>
     </v-row>
   </v-container>
