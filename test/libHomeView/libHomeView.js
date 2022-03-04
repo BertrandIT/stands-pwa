@@ -1,6 +1,7 @@
 class Biblio{
     innerText;
     get button () {return $$('//button/span[text()="'+this.innerText+'"]')[0]}
+    
 
     clickButton(innerText){
         this.innerText = innerText;
@@ -9,6 +10,8 @@ class Biblio{
     }
 
     
+
+
 }
 
  module.exports = new Biblio();
