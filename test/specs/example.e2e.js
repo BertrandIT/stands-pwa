@@ -37,7 +37,6 @@ describe('Filtr test', async() => {
         await browser.pause(2000)
         const filtr = await $('#filter-button')
         await filtr.click()
-        await browser.pause(2000)
         var found = false;
         await $$('.v-card__title.d-flex.py-2').forEach(async(element) => {
             const el = await element.$$('.text-body-2')[2].getText();
@@ -47,24 +46,6 @@ describe('Filtr test', async() => {
         expect(found).toEqual(false);
     });
 });
-
-// describe('Filtr test', () => {
-//     it('filtrowanie po statusie - gotowy do wysyłki', async () => {
-//         await browser.url(`http://localhost:8080`);
-//         libHomeView.clickButton(" Przegląd historii ");
-//         $("#status").click();
-//         $("#Gotowy").click();
-//         await sleep(2000);
-//         $$('#filter-button').click();
-//         found = false;
-//         $$('.v-card__title.d-flex.py-2').forEach(element => {
-//             found=element.children[3].innerText!="Gotowy do wysyłki";            
-            
-//         });
-//         await sleep(2000);
-//         expect(found).toEqual(false);
-//     });
-// });
 
 // describe('Filtr test', () => {
 //     it('filtrowanie po statusie - wysłany', async () => {

@@ -16,14 +16,15 @@
     </v-row>
     <v-row v-else>
       <v-col class="flex-column d-flex">
-        <v-text-field label="Login" v-model="userlogin"></v-text-field>
+        <v-text-field id="loginId" label="Login" v-model="userlogin"></v-text-field>
         <v-text-field
+          id="passwordId"
           label="Hasło"
           type="password"
           v-model="password"
           @keydown.enter="() => login()"
         ></v-text-field>
-        <v-btn x-large color="success" @click="login">Zaloguj</v-btn>
+        <v-btn id="zaloguj" x-large color="success" @click="login">Zaloguj</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -65,6 +66,7 @@ export default {
             this.$root.manageAlert({
               text: "Błędny login",
               type: "error",
+              time: 20000,
             });
           } else {
             this.loginUser(response.data.user);

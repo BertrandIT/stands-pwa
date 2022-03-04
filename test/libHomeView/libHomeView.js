@@ -9,9 +9,6 @@ class Biblio{
     }
 
     
-    
-
-
 }
 
  module.exports = new Biblio();
