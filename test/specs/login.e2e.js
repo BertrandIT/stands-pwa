@@ -17,7 +17,6 @@ async function Logowanie(login, password){
     await sleep(2000)
     //populate auth inputs
     await driver.findElement(By.id('loginId')).sendKeys(login);
-
     await sleep(2000)
     await driver.findElement(By.id('passwordId')).sendKeys(password);
     await sleep(2000)
