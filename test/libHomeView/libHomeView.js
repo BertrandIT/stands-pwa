@@ -1,6 +1,6 @@
 class Biblio{
     innerText;
-    get button () {return $$('//button/span[text()="'+this.innerText+'"]')[0]}
+    get button () {return driver.findElement('//button/span[text()="'+this.innerText+'"]')[0]}
     
 
     clickButton(innerText){
@@ -8,8 +8,6 @@ class Biblio{
         console.log(this.button);
         this.button.click();
     }
-
-
 }
 
  module.exports = new Biblio();

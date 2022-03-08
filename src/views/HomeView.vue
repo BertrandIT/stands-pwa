@@ -8,7 +8,7 @@
         class="d-flex justify-center"
       >
         <router-link :to="tab.link">
-          <v-btn x-large color="primary" style="width: 75vw">
+          <v-btn :id="tab.id" x-large color="primary" style="width: 75vw">
             {{ tab.text }}
           </v-btn>
         </router-link></v-col
@@ -41,11 +41,11 @@ export default {
       userlogin: "",
       password: "",
       tabs: [
-        { text: "Przyjęcie stojaków", link: "/admitStands" },
-        { text: "Załadunek stojaków", link: "/loadStands" },
-        { text: "Wysyłka stojaków", link: "/sendStands" },
-        { text: "Zwrot stojaków", link: "/returnStands" },
-        { text: "Przegląd historii", link: "/viewHistory" },
+        { text: "Przyjęcie stojaków", link: "/admitStands", id: "przyjecie" },
+        { text: "Załadunek stojaków", link: "/loadStands", id:"zaladunek" },
+        { text: "Wysyłka stojaków", link: "/sendStands", id: "wysylka" },
+        { text: "Zwrot stojaków", link: "/returnStands", id:"zwrot" },
+        { text: "Przegląd historii", link: "/viewHistory", id:"przeglad" },
       ],
     };
   },
