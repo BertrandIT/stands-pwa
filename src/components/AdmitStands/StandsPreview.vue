@@ -124,7 +124,7 @@ export default {
       await axios
         .post("http://192.168.1.6:8081/api/savestands", {
           ...this.standsData,
-          windowStands: this.stands.map((item) => ({ barcode: item })),
+          windowStands: this.stands,
           user: this.user.email,
         })
         .then(() => {
