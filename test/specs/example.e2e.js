@@ -27,15 +27,15 @@ async function Filtruj(id) {
     //const wynik = await driver.findElements(By.css("div[class='v-card__title d-flex py-2']"));
    // driver.execute_script("return document.querySelector");
     await sleep(3000)
-    const wynik = await driver.findElements(By.js("return document.querySelectorAll('span.text-body-2')"))
+    const wynik = await driver.findElements(By.css("span.text-body-2"))
     
-    //console.log(wynik)
     await sleep(3000)
     
-    wynik.forEach(async(element, idx) => {
-    const proba = await element.getText();
-       console.log(proba);
-    });
+    for (let index = 4; index < wynik.length; index++) {
+        if(index % 4 === 2){
+            found = await wynik[index].getAttribute("innerText") !== "Gotowy do wysyłki" ? true : found
+        } 
+    }
    
 //     wynik.forEach(async(element) => {
 //        const el = element.findElement(By.className('text-body-2')[2]).getText();
@@ -52,9 +52,10 @@ async function Filtruj(id) {
 describe('Wysyłka stojaka', async(done) =>{
     it('Wyszukanie po nr stojaka', async() =>{
          //launch the browser
-    driver = await new Builder().forBrowser("firefox").build()
+        driver = await new Builder().forBrowser("firefox").build()
     //navigate to application
-    await driver.get('http://localhost:8080')
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
         await Logowanie.Logowanie('admin', 'admin123', driver)
         await Filtruj('Zwrocony')
     }).catch(done);
