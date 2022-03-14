@@ -35,6 +35,9 @@ export default {
   methods: {
     ...mapActions(["assignStandsData"]),
     setData(data) {
+      if (data.key === "supplier") {
+        this.standsData["ownStand"] = data.value === "OWN";
+      }
       this.standsData[data.key] = data.value;
     },
     changeAction(action) {
