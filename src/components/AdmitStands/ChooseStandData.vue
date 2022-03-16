@@ -39,14 +39,6 @@
             ><p :id="item.label">{{ item.label }}</p></template
           ></v-select
         >
-        <v-checkbox
-          label="Własny stojak"
-          @change="
-            (event) => {
-              this.$emit('setData', { value: event, key: 'ownStand' });
-            }
-          "
-        ></v-checkbox>
       </v-col>
     </v-row>
     <v-row
@@ -96,6 +88,7 @@ export default {
         { label: "IGP", value: "IGP" },
         { label: "GLASSOLUTIONS", value: "GLASSOLUTIONS" },
         { label: "INNY", value: "INNY" },
+        { label: "WŁASNY", value: "OWN" },
       ],
     };
   },

@@ -1,6 +1,9 @@
 <template>
   <v-container style="width: 100%" class="mx-0 pa-0">
     <v-card-subtitle class="mb-0 pb-0">Zeskanowane stojaki</v-card-subtitle>
+    <v-card-subtitle class="mb-0 pb-0"
+      >Ilość stojaków: {{ stands.length }}</v-card-subtitle
+    >
     <v-virtual-scroll
       width="100%"
       :items="stands"

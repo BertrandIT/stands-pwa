@@ -3,18 +3,33 @@
     <v-virtual-scroll
       width="100%"
       :items="stands"
-      item-height="40"
+      item-height="50"
       :height="($root.windowHeight / 5) * 2"
     >
       <template v-slot:default="{ item, index }">
-        <v-list-item :key="item">
+        <v-list-item :key="item.barcode">
           <v-list-item-content>
             <v-list-item-title
-              class="text-h6 mt-4 font-weight-bold text-uppercase"
-              v-text="item"
+              class="text-h6 mt-16 font-weight-bold text-uppercase"
+              v-text="item.barcode"
             ></v-list-item-title>
+            <v-list-item-subtitle class="text-subtitle-1 text-uppercase"
+              ><p
+                v-if="item.daysleft"
+                :class="
+                  item.daysleft <= 7
+                    ? 'red--text font-weight-bold text--lighten-1'
+                    : null
+                "
+              >
+                {{
+                  isNaN(item.daysleft)
+                    ? item.daysleft
+                    : `Deadline za ${item.daysleft} dni`
+                }}
+              </p></v-list-item-subtitle
+            >
           </v-list-item-content>
-
           <v-list-item-action>
             <v-btn
               :id="`delete-stand-${index}`"
