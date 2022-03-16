@@ -3,6 +3,7 @@ const {Builder, By, Key} = require ("selenium-webdriver");
 const assert = require ("assert")
 const expect = require ("expect");
 const { time } = require('console');
+const Logowanie = require('../libLogowanie/libLogowanie.js')
 let driver
 
 function sleep(ms) {

@@ -11,55 +11,154 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function Filtruj(id) {
+async function Filtruj(elTab, id, kolumna, status) {
     await driver.findElement(By.id('przeglad')).click();
     await sleep(8000)
     const elementFiltr = await driver.findElements(By.className('v-select__selections'));
     await sleep(2000)
-    elementFiltr[0].click();
+    elementFiltr[elTab].click();
     await sleep(2000)
     await driver.findElement(By.id(id)).click();
     await sleep(2000)
     await driver.findElement(By.id('filter-button')).click();
-   // expect(tytul).toEqual(nrStojaka)
    await sleep(2000)
     var found = false;
-    //const wynik = await driver.findElements(By.css("div[class='v-card__title d-flex py-2']"));
-   // driver.execute_script("return document.querySelector");
     await sleep(3000)
     const wynik = await driver.findElements(By.css("span.text-body-2"))
-    
     await sleep(3000)
-    
     for (let index = 4; index < wynik.length; index++) {
-        if(index % 4 === 2){
-            found = await wynik[index].getAttribute("innerText") !== "Gotowy do wysyłki" ? true : found
+        if(index % 4 === kolumna){
+            found = await wynik[index].getAttribute("innerText") !== status ? true : found
         } 
     }
-   
-//     wynik.forEach(async(element) => {
-//        const el = element.findElement(By.className('text-body-2')[2]).getText();
-//        found = el!='ZW';
-//        console.log(el)
-//    });
-   
     expect(found).toEqual(false);
     await driver.quit()
     driver = null;
 
 }
 
-describe('Wysyłka stojaka', async(done) =>{
-    it('Wyszukanie po nr stojaka', async() =>{
-         //launch the browser
+async function WpiszTekst(numerStojaka, nazwa) {
+    await driver.findElement(By.id('przeglad')).click();
+    await sleep(8000)
+    await driver.findElement(By.id('stand-barcode')).sendKeys(numerStojaka);
+    await sleep(2000)
+    await driver.findElement(By.id('filter-button')).click();
+   await sleep(2000)
+    var found = false;
+    await sleep(3000)
+    const wynik = await driver.findElements(By.css("span.text-subtitle-2"));
+    await sleep(3000)
+    found = await wynik[1].getAttribute("innerText") !== nazwa ? true : found
+    expect(found).toEqual(false);
+    await driver.quit()
+    driver = null;
+
+}
+
+
+describe('Przegląd historii', async(done) =>{
+    it('Status zwrocony', async() =>{
         driver = await new Builder().forBrowser("firefox").build()
-    //navigate to application
         await driver.get('http://localhost:8080')
         driver.manage().window().maximize();
         await Logowanie.Logowanie('admin', 'admin123', driver)
-        await Filtruj('Zwrocony')
+        await Filtruj(0,'Zwrocony', 2, 'Zwrócony')
     }).catch(done);
 });
+
+describe('Przegląd historii', async(done) =>{
+    it('Status gotowy', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await Filtruj(0, 'Gotowy', 2, 'Gotowy do wysyłki')
+    }).catch(done);
+});
+
+describe('Przegląd historii', async(done) =>{
+    it('Status wyslany', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await Filtruj(0, 'Wyslany', 2, 'Wysłany')
+    }).catch(done);
+});
+
+describe('Przegląd historii', async(done) =>{
+    it('Status zmiana', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await Filtruj(0, 'Zmiana', 2, 'Zmiana lokalizacji')
+    }).catch(done);
+});
+
+describe('Przegląd historii', async(done) =>{
+    it('Status przyjecie', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await Filtruj(0, 'Przyjecie', 2, 'Przyjęcie na stan')
+    }).catch(done);
+});
+
+describe('Przegląd historii', async(done) =>{
+    it('Lokalizacja PVC', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await Filtruj(1, 'PVC', 3, 'B_PVC')
+    }).catch(done);
+});
+
+describe('Przegląd historii', async(done) =>{
+    it('Lokalizacja ALU', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await Filtruj(1, 'ALU', 3, 'B_ALU')
+    }).catch(done);
+});
+
+describe('Przegląd historii', async(done) =>{
+    it('Lokalizacja DRE', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await Filtruj(1, 'DRE', 3, 'B_DRE')
+    }).catch(done);
+});
+
+describe('Przegląd historii', async(done) =>{
+    it('Deadline zbizajacy', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await Filtruj(2, 'Zblizajacy_sie_termin', 1, 'B_DRE')
+    }).catch(done);
+});
+
+describe('Przegląd historii', async(done) =>{
+    it('Numer stojaka', async() =>{
+        driver = await new Builder().forBrowser("firefox").build()
+        await driver.get('http://localhost:8080')
+        driver.manage().window().maximize();
+        await Logowanie.Logowanie('admin', 'admin123', driver)
+        await WpiszTekst('BB120', 'BB120')
+
+    }).catch(done);
+});
+
+
+
 
 // describe('Filtr test', async() => {
 //     it('filtrowanie po statusie - zwrócony', async () => {
