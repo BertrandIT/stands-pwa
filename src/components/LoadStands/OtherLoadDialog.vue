@@ -48,6 +48,7 @@
           <v-text-field
             v-model="description"
             :label="isWindow ? 'Ilość szyb' : 'Opis'"
+            id="insert-opis"
           />
         </v-card-text>
         <v-card-actions class="justify-end">

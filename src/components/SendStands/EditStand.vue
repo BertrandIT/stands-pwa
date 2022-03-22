@@ -13,10 +13,10 @@
         id="new-stand-barcode"
         :disabled="!!newStand"
       ></v-text-field>
-      <v-btn @click="addStand" small color="primary" v-if="!newStand"
+      <v-btn @click="addStand" small color="primary" v-if="!newStand" id="download-stands"
         >Pobierz</v-btn
       >
-      <v-btn v-else @click="resetStand" color="warning" small
+      <v-btn v-else @click="resetStand" color="warning" small id="reset-stands"
         >Resetuj Stojak</v-btn
       >
     </v-card-title>
@@ -114,7 +114,7 @@ export default {
         const items = this.items.filter((item) =>
           this.selectedItems.includes(item.id)
         );
-        await axios.post("http://192.168.1.6:8081/api/relocateItems", {
+        await axios.post("api/relocateItems", {
           user: this.$store.state.user.email,
           newStand: this.newStand,
           oldStandId: this.windowStandId,

@@ -149,7 +149,7 @@ export default {
     async sendEmptyStand() {
       await axios
         .patch(
-          `http://192.168.1.6:8081/api/massStandLoad/${this.standToLoad.id}`,
+          `api/massStandLoad/${this.standToLoad.id}`,
           {
             storedItems: this.standLoad,
           }
@@ -172,7 +172,7 @@ export default {
     async editStandLoad() {
       await axios
         .patch(
-          `http://192.168.1.6:8081/api/updateLoad/${this.standToLoad.id}`,
+          `api/updateLoad/${this.standToLoad.id}`,
           {
             items: this.standLoad,
             deleted: this.deleted,

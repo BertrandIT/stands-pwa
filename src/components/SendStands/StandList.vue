@@ -160,7 +160,7 @@ export default {
             load_number: stand.load_number,
           };
         });
-        await axios.post("http://192.168.1.6:8081/api/sendStands", {
+        await axios.post("api/sendStands", {
           sentStands,
         });
         this.selectedStands = [];

@@ -91,7 +91,7 @@ export default {
         const stands = this.stands.map((stand) => stand.id);
         try {
           await axios.post(
-            "http://192.168.1.6:8081/api/returnStandsToSupplier",
+            "api/returnStandsToSupplier",
             {
               user: this.$store.state.user.email,
               stands,
