@@ -77,7 +77,9 @@
 import CodeScanner from "@/components/CodeScanner.vue";
 import axios from "@/axios.js";
 import { mapActions, mapState } from "vuex";
+import calcDaysLeft from "@/mixins/calcDaysLeft.js";
 export default {
+  mixins: [calcDaysLeft],
   components: {
     CodeScanner,
   },
@@ -100,10 +102,17 @@ export default {
     async addStand(standBarcode = null) {
       const barcode = this.handleBarcode(standBarcode);
       await axios.get("api/windowStand/" + barcode).then((response) => {
+        const daysleft = this.calcDeadline(response.data.deadline);
         if (response.data === "Item not found") {
           this.$root.manageAlert({
             text: "Nie można wykorzystać stojaka, stojak nie istnieje",
             type: "warning",
+          });
+        } else if (!isNaN(daysleft) && daysleft <= new Date()) {
+          this.$root.manageAlert({
+            text: `Nie można załadować stojak, ponieważ deadline został przekroczony`,
+            type: "error",
+            time: 2000,
           });
         } else if (
           response.data.action == "Wysłany" ||

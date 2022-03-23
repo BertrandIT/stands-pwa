@@ -38,7 +38,9 @@
 <script>
 import axios from "axios";
 import { mapState, mapActions } from "vuex";
+import calcDaysLeft from "@/mixins/calcDaysLeft.js";
 export default {
+  mixins: [calcDaysLeft],
   data() {
     return {
       standBarcode: "",
@@ -93,17 +95,6 @@ export default {
         this.standBarcode = "";
         this.$refs.barcodeinput.focus();
       }
-    },
-    calcDeadline(deadline) {
-      const oneDay = 24 * 60 * 60 * 1000;
-      const firstDate = new Date(deadline);
-      const secondDate = new Date();
-      if (deadline === undefined) {
-        return null;
-      } else if (deadline === null) {
-        return "Stojak własny";
-      }
-      return Math.round((firstDate - secondDate) / oneDay);
     },
     async addWoodBB(type) {
       let max = 0;
