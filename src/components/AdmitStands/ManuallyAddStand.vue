@@ -67,18 +67,27 @@ export default {
           });
         } else {
           const res = await axios.get(`api/windowStand/${this.standBarcode}`);
+          const daysleft = this.calcDeadline(res.data.deadline);
           this.assignStands([
             ...this.stands,
             {
               barcode: this.standBarcode,
-              daysleft: this.calcDeadline(res.data.deadline),
+              daysleft,
             },
           ]);
-          this.$root.manageAlert({
-            text: `Dodano stojak ${this.standBarcode}`,
-            type: "success",
-            time: 1500,
-          });
+          if (!isNaN(daysleft) && daysleft <= new Date()) {
+            this.$root.manageAlert({
+              text: `Dodano stojak, którego deadline jest przekroczony`,
+              type: "error",
+              time: 2000,
+            });
+          } else {
+            this.$root.manageAlert({
+              text: `Dodano stojak ${this.standBarcode}`,
+              type: "success",
+              time: 1500,
+            });
+          }
         }
         this.assignStandBarcode("");
         this.standBarcode = "";
@@ -94,7 +103,7 @@ export default {
       } else if (deadline === null) {
         return "Stojak własny";
       }
-      return Math.round(Math.abs((firstDate - secondDate) / oneDay));
+      return Math.round((firstDate - secondDate) / oneDay);
     },
     async addWoodBB(type) {
       let max = 0;
