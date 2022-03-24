@@ -135,7 +135,7 @@ export default {
             ...response.data,
             wasEmpty: false,
           };
-        } else if (!isNaN(daysleft) && daysleft <= new Date()) {
+        } else if (!isNaN(daysleft) && daysleft <= 0) {
           this.deadlineExceeded({
             barcode,
             ...response.data,
@@ -196,7 +196,7 @@ export default {
         .catch((err) => {
           console.log(err);
           this.$root.manageAlert({
-            text: "Sprawdź połączenie z Internetem, bądź skontaktuj się z działem IT222",
+            text: "Sprawdź połączenie z Internetem, bądź skontaktuj się z działem IT",
             type: "error",
           });
         });

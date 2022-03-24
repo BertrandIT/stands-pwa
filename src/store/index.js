@@ -52,6 +52,15 @@ export default new Vuex.Store({
     setUserData(state, data) {
       state.user = data;
     },
+    resetState(state) {
+      state.standsData = {};
+      state.standBarcode = "";
+      state.elementBarcode = "";
+      state.standToLoad = {};
+      state.stands = [];
+      state.standLoad = [];
+      state.deleted = [];
+    },
   },
   actions: {
     assignStandsData({ commit }, data) {
@@ -81,6 +90,9 @@ export default new Vuex.Store({
     },
     clearStandToLoad({ commit }) {
       commit("clearStandToLoad");
+    },
+    resetState({ commit }) {
+      commit("resetState");
     },
   },
   modules: {},

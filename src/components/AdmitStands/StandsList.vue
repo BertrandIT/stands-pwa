@@ -17,7 +17,7 @@
               ><p
                 v-if="item.daysleft"
                 :class="
-                  item.daysleft <= new Date()
+                  item.daysleft <= 0
                     ? 'red--text font-weight-bold text--lighten-1'
                     : null
                 "

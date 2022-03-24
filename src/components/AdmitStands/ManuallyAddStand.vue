@@ -77,7 +77,7 @@ export default {
               daysleft,
             },
           ]);
-          if (!isNaN(daysleft) && daysleft <= new Date()) {
+          if (!isNaN(daysleft) && daysleft <= 0) {
             this.$root.manageAlert({
               text: `Dodano stojak, którego deadline jest przekroczony`,
               type: "error",
