@@ -51,21 +51,19 @@
       >
     </v-row>
     <v-dialog
-      v-model="dialog"
+      v-model="dialog.value"
       transition="dialog-bottom-transition"
       max-width="600"
     >
-      <template v-slot:default="dialog">
+      <template #default>
         <v-card>
-          <v-toolbar color="primary" dark
-            >Stojak jest już załadowany
-          </v-toolbar>
+          <v-toolbar color="primary" dark>{{ dialog.title }} </v-toolbar>
           <v-card-text>
-            <p class="pa-2">Czy chcesz edytować załadunek?</p>
+            <p class="pa-2">{{ dialog.text }}</p>
           </v-card-text>
           <v-card-actions class="justify-end">
             <v-btn id="no-button" text @click="dialog.value = false">Nie</v-btn>
-            <v-btn id="yes-button" text @click="editLoad">Tak</v-btn>
+            <v-btn id="yes-button" text @click="dialog.submitAction">Tak</v-btn>
           </v-card-actions>
         </v-card>
       </template>
@@ -87,7 +85,9 @@ export default {
     return {
       standBarcode: "",
       scanning: false,
-      dialog: false,
+      dialog: {
+        value: false,
+      },
       standToLoad: {},
       otherLoadDialog: false,
     };
@@ -108,12 +108,6 @@ export default {
             text: "Nie można wykorzystać stojaka, stojak nie istnieje",
             type: "warning",
           });
-        } else if (!isNaN(daysleft) && daysleft <= new Date()) {
-          this.$root.manageAlert({
-            text: `Nie można załadować stojak, ponieważ deadline został przekroczony`,
-            type: "error",
-            time: 2000,
-          });
         } else if (
           response.data.action == "Wysłany" ||
           response.data.action == "Zwrócony"
@@ -130,20 +124,27 @@ export default {
             response.data.action == "Przyjęcie na stan"
           )
         ) {
-          this.dialog = true;
+          this.dialog = {
+            value: true,
+            title: "Stojak jest już załadowany",
+            text: "Czy chcesz edytować załadunek?",
+            submitAction: this.editLoad,
+          };
           this.standToLoad = {
-            barcode: barcode,
-            id: response.data.id,
-            deadline: response.data.deadline,
-            action: response.data.action,
+            barcode,
+            ...response.data,
             wasEmpty: false,
           };
+        } else if (!isNaN(daysleft) && daysleft <= new Date()) {
+          this.deadlineExceeded({
+            barcode,
+            ...response.data,
+            wasEmpty: true,
+          });
         } else {
           this.assignStandToLoad({
-            barcode: barcode,
-            id: response.data.id,
-            deadline: response.data.deadline,
-            action: response.data.action,
+            barcode,
+            ...response.data,
             wasEmpty: true,
           });
         }
@@ -158,6 +159,24 @@ export default {
     async editLoad() {
       this.assignStandToLoad(this.standToLoad);
       await this.getLoadInfo(this.standToLoad.id);
+    },
+    deadlineExceeded(stand) {
+      if (this.user.deadlineOverride) {
+        this.dialog = {
+          value: true,
+          title: "Przekroczono deadline".toUpperCase(),
+          text: "Czy chcesz na pewno chcesz kontynuować załadunek?",
+          submitAction: () => {
+            this.assignStandToLoad(stand);
+          },
+        };
+      } else {
+        this.$root.manageAlert({
+          text: `Nie można załadować stojak, ponieważ deadline został przekroczony`,
+          type: "error",
+          time: 2000,
+        });
+      }
     },
     async getLoadInfo(id) {
       await axios
