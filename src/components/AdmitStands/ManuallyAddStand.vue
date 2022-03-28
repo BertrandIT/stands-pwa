@@ -38,7 +38,9 @@
 <script>
 import axios from "axios";
 import { mapState, mapActions } from "vuex";
+import calcDaysLeft from "@/mixins/calcDaysLeft.js";
 export default {
+  mixins: [calcDaysLeft],
   data() {
     return {
       standBarcode: "",
@@ -67,34 +69,32 @@ export default {
           });
         } else {
           const res = await axios.get(`api/windowStand/${this.standBarcode}`);
+          const daysleft = this.calcDeadline(res.data.deadline);
           this.assignStands([
             ...this.stands,
             {
               barcode: this.standBarcode,
-              daysleft: this.calcDeadline(res.data.deadline),
+              daysleft,
             },
           ]);
-          this.$root.manageAlert({
-            text: `Dodano stojak ${this.standBarcode}`,
-            type: "success",
-            time: 1500,
-          });
+          if (!isNaN(daysleft) && daysleft <= 0) {
+            this.$root.manageAlert({
+              text: `Dodano stojak, którego deadline jest przekroczony`,
+              type: "error",
+              time: 2000,
+            });
+          } else {
+            this.$root.manageAlert({
+              text: `Dodano stojak ${this.standBarcode}`,
+              type: "success",
+              time: 1500,
+            });
+          }
         }
         this.assignStandBarcode("");
         this.standBarcode = "";
         this.$refs.barcodeinput.focus();
       }
-    },
-    calcDeadline(deadline) {
-      const oneDay = 24 * 60 * 60 * 1000;
-      const firstDate = new Date(deadline);
-      const secondDate = new Date();
-      if (deadline === undefined) {
-        return null;
-      } else if (deadline === null) {
-        return "Stojak własny";
-      }
-      return Math.round(Math.abs((firstDate - secondDate) / oneDay));
     },
     async addWoodBB(type) {
       let max = 0;

@@ -56,21 +56,30 @@ export default {
   },
   methods: {
     ...mapActions(["loginUser"]),
+    async checkPermission({ rightTitle, user }) {
+      const res = await axios.get(`api/checkrightstands/${user}/${rightTitle}`);
+      return !!(res.data && +res.data === 1);
+    },
     async login() {
       await axios
         .get(
           "api/usershow/" + this.userlogin.toUpperCase() + "/" + this.password
         )
         .then(async (response) => {
-          if (response.data.user == null) {
+          const { user } = response.data;
+          if (user == null) {
             this.$root.manageAlert({
               text: "Błędny login",
               type: "error",
               time: 20000,
             });
           } else {
-            this.loginUser(response.data.user);
-            localStorage.setItem("user", JSON.stringify(response.data.user));
+            user.deadlineOverride = await this.checkPermission({
+              rightTitle: "stand-deadline-override",
+              user: user.email,
+            });
+            this.loginUser(user);
+            localStorage.setItem("user", JSON.stringify(user));
             this.userlogin = "";
             this.password = "";
           }
