@@ -16,7 +16,11 @@
     </v-row>
     <v-row v-else>
       <v-col class="flex-column d-flex">
-        <v-text-field id="loginId" label="Login" v-model="userlogin"></v-text-field>
+        <v-text-field
+          id="loginId"
+          label="Login"
+          v-model="userlogin"
+        ></v-text-field>
         <v-text-field
           id="passwordId"
           label="Hasło"
@@ -24,7 +28,9 @@
           v-model="password"
           @keydown.enter="() => login()"
         ></v-text-field>
-        <v-btn id="zaloguj" x-large color="success" @click="login">Zaloguj</v-btn>
+        <v-btn id="zaloguj" x-large color="success" @click="login"
+          >Zaloguj</v-btn
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -42,10 +48,15 @@ export default {
       password: "",
       tabs: [
         { text: "Przyjęcie stojaków", link: "/admitStands", id: "przyjecie" },
-        { text: "Załadunek stojaków", link: "/loadStands", id:"zaladunek" },
+        { text: "Załadunek stojaków", link: "/loadStands", id: "zaladunek" },
         { text: "Wysyłka stojaków", link: "/sendStands", id: "wysylka" },
-        { text: "Zwrot stojaków", link: "/returnStands", id:"zwrot" },
-        { text: "Przegląd historii", link: "/viewHistory", id:"przeglad" },
+        { text: "Zwrot stojaków", link: "/returnStands", id: "zwrot" },
+        {
+          text: "Przemalowanie stojaków",
+          link: "/repaintStands",
+          id: "repaint",
+        },
+        { text: "Przegląd historii", link: "/viewHistory", id: "przeglad" },
       ],
     };
   },
