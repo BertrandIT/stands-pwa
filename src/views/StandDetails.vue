@@ -3,7 +3,9 @@
     <v-card-title>
       <span>Logi stojaka: {{ $route.params.standBarcode }}</span>
       <span class="ml-auto">
-        <v-btn id="cancel-button" small color="amber" link to="/viewHistory">Wróć</v-btn>
+        <v-btn id="cancel-button" small color="amber" link to="/viewHistory"
+          >Wróć</v-btn
+        >
       </span>
     </v-card-title>
     <v-list v-if="logs.length">
@@ -40,6 +42,7 @@
 </template>
 <script>
 import axios from "@/axios";
+import { mapActions, mapState } from "vuex";
 
 export default {
   data() {
@@ -52,7 +55,20 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
+  created() {
+    if (localStorage.getItem("user")) {
+      this.loginUser(JSON.parse(localStorage.getItem("user")));
+    } else if (!this.user.email) {
+      this.$router.push("/");
+    }
+  },
   methods: {
+    ...mapActions(["loginUser"]),
     async getStandLogs(standId) {
       const res = await axios.get(`/api/showLoads/${standId}`);
       this.logs = res.data;

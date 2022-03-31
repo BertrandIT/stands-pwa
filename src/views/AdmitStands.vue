@@ -21,7 +21,7 @@
 import ChooseStandData from "@/components/AdmitStands/ChooseStandData.vue";
 import StandsPreview from "@/components/AdmitStands/StandsPreview.vue";
 
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   components: { ChooseStandData, StandsPreview },
@@ -32,8 +32,20 @@ export default {
       standsData: {},
     };
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
+  created() {
+    if (localStorage.getItem("user")) {
+      this.loginUser(JSON.parse(localStorage.getItem("user")));
+    } else if (!this.user.email) {
+      this.$router.push("/");
+    }
+  },
   methods: {
-    ...mapActions(["assignStandsData"]),
+    ...mapActions(["assignStandsData", "loginUser"]),
     setData(data) {
       if (data.key === "supplier") {
         this.standsData["ownStand"] = data.value === "OWN";

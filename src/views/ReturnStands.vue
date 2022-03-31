@@ -47,6 +47,7 @@
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
 import checkStand from "@/mixins/checkStand";
 import axios from "@/axios";
+import { mapActions, mapState } from "vuex";
 
 export default {
   mixins: [checkStand],
@@ -60,7 +61,20 @@ export default {
   mounted() {
     this.$refs.returnstand.focus();
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
+  created() {
+    if (localStorage.getItem("user")) {
+      this.loginUser(JSON.parse(localStorage.getItem("user")));
+    } else if (!this.user.email) {
+      this.$router.push("/");
+    }
+  },
   methods: {
+    ...mapActions(["assignStandsData", "loginUser"]),
     async addStand() {
       const stand = await this.checkStand({
         barcode: (this.standBarcode = this.standBarcode.includes("STAND:")
@@ -90,13 +104,10 @@ export default {
       if (this.stands.length) {
         const stands = this.stands.map((stand) => stand.id);
         try {
-          await axios.post(
-            "http://192.168.1.6:8081/api/returnStandsToSupplier",
-            {
-              user: this.$store.state.user.email,
-              stands,
-            }
-          );
+          await axios.post("http://127.0.0.1:8081/api/returnStandsToSupplier", {
+            user: this.$store.state.user.email,
+            stands,
+          });
           this.$root.manageAlert({
             text: "Zwrócono zeskanowane stojaki",
             type: "success",

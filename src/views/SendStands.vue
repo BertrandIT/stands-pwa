@@ -23,6 +23,7 @@
 <script>
 import axios from "@/axios";
 import StandList from "@/components/SendStands/StandList.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   components: { StandList },
@@ -34,6 +35,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
     filteredStands() {
       if (this.search) {
         const search = this.search.toLowerCase().trim();
@@ -55,7 +59,15 @@ export default {
   async beforeMount() {
     await this.getStandsReadyToGo();
   },
+  created() {
+    if (localStorage.getItem("user")) {
+      this.loginUser(JSON.parse(localStorage.getItem("user")));
+    } else if (!this.user.email) {
+      this.$router.push("/");
+    }
+  },
   methods: {
+    ...mapActions(["loginUser"]),
     async getStandsReadyToGo() {
       this.overlay = true;
       const res = await axios.get("/api/standsReadyToGo");
