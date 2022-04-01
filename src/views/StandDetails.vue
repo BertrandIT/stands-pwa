@@ -42,9 +42,10 @@
 </template>
 <script>
 import axios from "@/axios";
-import { mapActions, mapState } from "vuex";
+import loginCheck from "@/mixins/loginCheck";
 
 export default {
+  mixins: [loginCheck],
   data() {
     return {
       logs: [],
@@ -55,20 +56,7 @@ export default {
       ],
     };
   },
-  computed: {
-    ...mapState({
-      user: (state) => state.user,
-    }),
-  },
-  created() {
-    if (localStorage.getItem("user")) {
-      this.loginUser(JSON.parse(localStorage.getItem("user")));
-    } else if (!this.user.email) {
-      this.$router.push("/");
-    }
-  },
   methods: {
-    ...mapActions(["loginUser"]),
     async getStandLogs(standId) {
       const res = await axios.get(`/api/showLoads/${standId}`);
       this.logs = res.data;

@@ -47,10 +47,11 @@
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
 import checkStand from "@/mixins/checkStand";
 import axios from "@/axios";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
+import loginCheck from "@/mixins/loginCheck";
 
 export default {
-  mixins: [checkStand],
+  mixins: [checkStand, loginCheck],
   components: { ScannedStands },
   data() {
     return {
@@ -61,20 +62,8 @@ export default {
   mounted() {
     this.$refs.returnstand.focus();
   },
-  computed: {
-    ...mapState({
-      user: (state) => state.user,
-    }),
-  },
-  created() {
-    if (localStorage.getItem("user")) {
-      this.loginUser(JSON.parse(localStorage.getItem("user")));
-    } else if (!this.user.email) {
-      this.$router.push("/");
-    }
-  },
   methods: {
-    ...mapActions(["assignStandsData", "loginUser"]),
+    ...mapActions(["assignStandsData"]),
     async addStand() {
       const stand = await this.checkStand({
         barcode: (this.standBarcode = this.standBarcode.includes("STAND:")

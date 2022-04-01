@@ -11,10 +11,11 @@
 import FiltersSection from "@/components/HistoryView/FiltersSection.vue";
 import StandList from "@/components/HistoryView/StandList.vue";
 import axios from "@/axios";
-import { mapActions, mapState } from "vuex";
+import loginCheck from "@/mixins/loginCheck";
 
 export default {
   components: { FiltersSection, StandList },
+  mixins: [loginCheck],
   data() {
     return {
       stands: [],
@@ -30,9 +31,6 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      user: (state) => state.user,
-    }),
     filteredStands() {
       const filters = Object.keys(this.filters);
       return this.stands.filter((stand) => {
@@ -63,16 +61,7 @@ export default {
       });
     },
   },
-  async created() {
-    await this.getStands();
-    if (localStorage.getItem("user")) {
-      this.loginUser(JSON.parse(localStorage.getItem("user")));
-    } else if (!this.user.email) {
-      this.$router.push("/");
-    }
-  },
   methods: {
-    ...mapActions(["loginUser"]),
     async getStands() {
       // const res = await axios.get(
       //   `/standsHistoryPwa?startDate=${startDate}&endDate=${endDate}&localization=${localization}&action=${status}&client=${client}&deadline=${deadline}&standBarcode=${

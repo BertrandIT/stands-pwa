@@ -9,27 +9,21 @@
 import ChooseStand from "@/components/LoadStands/ChooseStand.vue";
 import StandLoad from "@/components/LoadStands/StandLoad.vue";
 import { mapState, mapActions } from "vuex";
+import loginCheck from "@/mixins/loginCheck";
 
 export default {
   components: { ChooseStand, StandLoad },
+  mixins: [loginCheck],
   data() {
     return {};
   },
   computed: {
     ...mapState({
       standToLoad: (state) => state.standToLoad,
-      user: (state) => state.user,
     }),
   },
-  created() {
-    if (localStorage.getItem("user")) {
-      this.loginUser(JSON.parse(localStorage.getItem("user")));
-    } else if (!this.user.email) {
-      this.$router.push("/");
-    }
-  },
   methods: {
-    ...mapActions(["assignStandsData", "loginUser"]),
+    ...mapActions(["assignStandsData"]),
   },
 };
 </script>
