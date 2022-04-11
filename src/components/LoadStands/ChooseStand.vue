@@ -9,8 +9,7 @@
     </p>
     <p class="text-center text-subtitle-1 mt-4 text-uppercase">Podaj stojak</p>
     <v-row>
-      <code-scanner @decode="addStand" v-if="scanning" />
-      <v-col v-else>
+      <v-col>
         <v-text-field
           id="choose-stand-input"
           v-model="standBarcode"
@@ -25,14 +24,6 @@
     <v-row
       class="justify-lg-end fill-height justify-center justify-sm-space-around flex-sm-row flex-column align-sm-end align-center"
     >
-      <!-- <v-btn
-        id="scanner-button"
-        color="primary"
-        x-large
-        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
-        @click="scanning = !scanning"
-        >{{ scanning ? "Zakończ" : "Zeskanuj stojak" }}</v-btn
-      > -->
       <v-btn
         id="submit-button"
         color="success"
@@ -72,19 +63,14 @@
 </template>
 
 <script>
-import CodeScanner from "@/components/CodeScanner.vue";
 import axios from "@/axios.js";
 import { mapActions, mapState } from "vuex";
 import calcDaysLeft from "@/mixins/calcDaysLeft.js";
 export default {
   mixins: [calcDaysLeft],
-  components: {
-    CodeScanner,
-  },
   data() {
     return {
       standBarcode: "",
-      scanning: false,
       dialog: {
         value: false,
       },

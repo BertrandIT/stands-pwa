@@ -15,7 +15,8 @@ export default {
             });
             return false;
           } else if (
-            Math.round(((deadline - new Date()) / 24) * 60 * 60 * 1000) <= 0
+            Math.round(((deadline - new Date()) / 24) * 60 * 60 * 1000) <= 0 &&
+            res.data.deadline
           ) {
             this.$root.manageAlert({
               text: "Stojak do przemalowania",

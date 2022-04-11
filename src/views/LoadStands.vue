@@ -8,7 +8,7 @@
 // @ is an alias to /src
 import ChooseStand from "@/components/LoadStands/ChooseStand.vue";
 import StandLoad from "@/components/LoadStands/StandLoad.vue";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import loginCheck from "@/mixins/loginCheck";
 
 export default {
@@ -21,9 +21,6 @@ export default {
     ...mapState({
       standToLoad: (state) => state.standToLoad,
     }),
-  },
-  methods: {
-    ...mapActions(["assignStandsData"]),
   },
 };
 </script>

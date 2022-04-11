@@ -45,12 +45,11 @@
 
 <script>
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
-import checkStand from "@/mixins/checkStand";
 import axios from "@/axios";
 import loginCheck from "@/mixins/loginCheck";
 
 export default {
-  mixins: [checkStand, loginCheck],
+  mixins: [loginCheck],
   components: { ScannedStands },
   data() {
     return {
