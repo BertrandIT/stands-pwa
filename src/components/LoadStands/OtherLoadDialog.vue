@@ -3,7 +3,7 @@
     :value="otherLoadDialog"
     transition="dialog-bottom-transition"
     max-width="600"
-    @click:outside="closeDialog"
+    persistent
   >
     <template #default>
       <v-card>
@@ -51,7 +51,15 @@
           />
         </v-card-text>
         <v-card-actions class="justify-end">
-          <v-btn id="dialog-cancel-button" text @click="closeDialog"
+          <v-btn
+            id="dialog-cancel-button"
+            text
+            @click="
+              () => {
+                clearData();
+                closeDialog();
+              }
+            "
             >Anuluj</v-btn
           >
           <v-btn id="dialog-submit-button" text @click="selectOrder"
@@ -119,6 +127,13 @@ export default {
   },
   methods: {
     ...mapActions(["assignStandLoad"]),
+    clearData() {
+      this.selectedOrder = "";
+      this.year = "";
+      this.order = "";
+      this.chassis = "";
+      this.description = "";
+    },
     async selectOrder() {
       this.overlay = true;
       if (
@@ -133,11 +148,11 @@ export default {
         });
       } else if (
         this.selectedOrder &&
-        this.year &&
+        (this.year || this.selectedOrder === "ALU") &&
         this.order &&
         !(this.isWindow && !this.description)
       ) {
-        let newOrder = "";
+        let newOrder = this.order;
         if (this.order.includes("AO")) {
           newOrder =
             "AO-" +
@@ -156,6 +171,7 @@ export default {
             ? `Szyby ${this.description} szt.`
             : this.description,
         }).then(() => {
+          this.clearData();
           this.closeDialog();
         });
       } else {
@@ -188,11 +204,7 @@ export default {
               text: `Dodano zlecenie ${data.commande}`,
               type: "success",
             });
-            this.selectedOrder = "";
-            this.year = "";
-            this.order = "";
-            this.chassis = "";
-            this.description = "";
+            this.clearData();
           } else {
             this.overlay = false;
             this.$root.manageAlert({
