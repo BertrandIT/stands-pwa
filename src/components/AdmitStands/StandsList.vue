@@ -1,5 +1,6 @@
 <template>
   <v-container style="width: 100%" class="mx-0 pa-0">
+    <p class="mb-0 pb-0">Ilość stojaków: {{ stands.length }}</p>
     <v-virtual-scroll
       width="100%"
       :items="stands"
@@ -10,14 +11,14 @@
         <v-list-item :key="item.barcode">
           <v-list-item-content>
             <v-list-item-title
-              class="text-h6 mt-16 font-weight-bold text-uppercase"
+              class="text-h6 font-weight-bold text-uppercase"
               v-text="item.barcode"
             ></v-list-item-title>
             <v-list-item-subtitle class="text-subtitle-1 text-uppercase"
               ><p
                 v-if="item.daysleft"
                 :class="
-                  item.daysleft <= 7
+                  item.daysleft <= 0
                     ? 'red--text font-weight-bold text--lighten-1'
                     : null
                 "

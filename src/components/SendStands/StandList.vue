@@ -1,5 +1,8 @@
 <template>
   <div>
+    <p class="mb-0 pb-0">
+      Ilość stojaków do wysłania: {{ selectedStands.length }}
+    </p>
     <v-row>
       <v-col>
         <v-list

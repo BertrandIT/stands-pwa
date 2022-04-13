@@ -15,8 +15,12 @@
           <v-list-item-content>
             <v-list-item-title
               class="text-h6 mt-4 font-weight-bold text-uppercase"
-              v-text="item.barcode"
-            ></v-list-item-title>
+              >{{
+                item.oldBarcode
+                  ? `${item.oldBarcode} -> ${item.barcode}`
+                  : item.barcode
+              }}</v-list-item-title
+            >
           </v-list-item-content>
 
           <v-list-item-action>

@@ -11,9 +11,11 @@
 import FiltersSection from "@/components/HistoryView/FiltersSection.vue";
 import StandList from "@/components/HistoryView/StandList.vue";
 import axios from "@/axios";
+import loginCheck from "@/mixins/loginCheck";
 
 export default {
   components: { FiltersSection, StandList },
+  mixins: [loginCheck],
   data() {
     return {
       stands: [],
@@ -58,9 +60,6 @@ export default {
         return passed;
       });
     },
-  },
-  async created() {
-    await this.getStands();
   },
   methods: {
     async getStands() {

@@ -6,7 +6,6 @@
     <p v-if="deliverydate" class="text-subtitle-2 mt-2 text-uppercase">
       Data dostawy: {{ deliverydate }}
     </p>
-    <code-scanner v-if="scanning" @decode="addElement" />
     <manually-add-element
       ref="addelement"
       @setDeliveryDate="(e) => (deliverydate = e)"
@@ -15,14 +14,6 @@
     <v-row
       class="justify-lg-end fill-height justify-center justify-sm-space-around flex-sm-row flex-column align-sm-end align-center"
     >
-      <!-- <v-btn
-        id="scanner-button"
-        color="primary"
-        x-large
-        class="white--text justify-center my-2 my-sm-0 mr-lg-4 flex-shrink-1 flex-sm-shrink-0"
-        @click="scanning = !scanning"
-        >{{ scanning ? "Zakończ" : "Zeskanuj stojak" }}</v-btn
-      > -->
       <v-btn
         id="submit-button"
         color="success"
@@ -51,15 +42,13 @@
 // @ is an alias to /src
 import ManuallyAddElement from "@/components/LoadStands/ManuallyAddElement.vue";
 import ElementsList from "@/components/LoadStands/ElementsList.vue";
-import CodeScanner from "@/components/CodeScanner.vue";
 import { mapState, mapActions } from "vuex";
 import axios from "@/axios";
 
 export default {
-  components: { ManuallyAddElement, ElementsList, CodeScanner },
+  components: { ManuallyAddElement, ElementsList },
   data() {
     return {
-      scanning: false,
       deliverydate: "",
     };
   },

@@ -45,13 +45,11 @@
 
 <script>
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
-import checkStand from "@/mixins/checkStand";
 import axios from "@/axios";
-import { mapActions } from "vuex";
 import loginCheck from "@/mixins/loginCheck";
 
 export default {
-  mixins: [checkStand, loginCheck],
+  mixins: [loginCheck],
   components: { ScannedStands },
   data() {
     return {
@@ -63,19 +61,86 @@ export default {
     this.$refs.returnstand.focus();
   },
   methods: {
-    ...mapActions(["assignStandsData"]),
     async addStand() {
-      const stand = await this.checkStand({
-        barcode: (this.standBarcode = this.standBarcode.includes("STAND:")
+      await this.checkStand(
+        (this.standBarcode = this.standBarcode.includes("STAND:")
           ? this.standBarcode.split(":")[1].trim()
-          : this.standBarcode.trim().toUpperCase()),
-        notAllowedStatuses: ["Zwrócony"],
-      });
-      if (stand) {
-        this.stands.push(stand);
-      }
+          : this.standBarcode.trim().toUpperCase())
+      );
       this.standBarcode = null;
       this.$refs.returnstand.focus();
+    },
+    async checkStand(barcode) {
+      if (barcode) {
+        const res = await axios.get(`/api/windowStandPwa/${barcode}`);
+        if (res.data) {
+          var deadline = new Date(res.data.deadline);
+          deadline.setMonth(deadline.getMonth() + 2);
+          if (
+            Math.round(((deadline - new Date()) / 24) * 60 * 60 * 1000) <= 0 &&
+            res.data.deadline &&
+            res.data.action !== "Zwrócony"
+          ) {
+            this.$root.manageAlert({
+              text: `Pomyślnie załadowano stojak`,
+              type: "success",
+              time: 1500,
+            });
+            await this.getBBCode(res.data);
+          } else {
+            this.$root.manageAlert({
+              text: "Podano nie poprawny stojak",
+              type: "warning",
+              time: 1500,
+            });
+          }
+        } else {
+          this.$root.manageAlert({
+            text: "Nie znaleziono stojaka o podanym barkodzie",
+            type: "error",
+          });
+        }
+      } else {
+        this.$root.manageAlert({
+          text: "Nie podano barkodu stojaka",
+          type: "error",
+        });
+      }
+    },
+    async getBBCode(stand) {
+      let max = 0;
+      if (this.stands.some((item) => item.barcode.includes("BB"))) {
+        this.stands.forEach((stand) => {
+          if (stand.barcode.includes("BB")) {
+            max =
+              stand.barcode.split("BB")[1] > max
+                ? +stand.barcode.split("BB")[1]
+                : max;
+          }
+        });
+        this.stands.push({
+          ...stand,
+          barcode: `BB${max + 1}`,
+          oldBarcode: this.standBarcode,
+        });
+        this.$root.manageAlert({
+          text: `Dodano stojak BB${max + 1}`,
+          type: "success",
+          time: 1500,
+        });
+      } else {
+        const res = await axios.get(`api/bbstandnumber`);
+        this.stands.push({
+          ...stand,
+          barcode: `BB${res.data[0].num + 1}`,
+          oldBarcode: this.standBarcode,
+        });
+        this.$root.manageAlert({
+          text: `Dodano stojak BB${res.data[0].num + 1}`,
+          type: "success",
+          time: 1500,
+        });
+      }
     },
     deleteStand(standId) {
       const standIndex = this.stands.findIndex((item) => item.id === standId);
@@ -91,11 +156,10 @@ export default {
     },
     async save() {
       if (this.stands.length) {
-        const stands = this.stands.map((stand) => stand.id);
         try {
-          await axios.post("http://127.0.0.1:8081/api/returnStandsToSupplier", {
+          await axios.post("http://127.0.0.1:8081/api/repaintStands", {
             user: this.$store.state.user.email,
-            stands,
+            stands: this.stands,
           });
           this.$root.manageAlert({
             text: "Zwrócono zeskanowane stojaki",

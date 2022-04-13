@@ -20,11 +20,13 @@
 // @ is an alias to /src
 import ChooseStandData from "@/components/AdmitStands/ChooseStandData.vue";
 import StandsPreview from "@/components/AdmitStands/StandsPreview.vue";
+import loginCheck from "@/mixins/loginCheck";
 
 import { mapActions } from "vuex";
 
 export default {
   components: { ChooseStandData, StandsPreview },
+  mixins: [loginCheck],
   data() {
     return {
       scanning: false,

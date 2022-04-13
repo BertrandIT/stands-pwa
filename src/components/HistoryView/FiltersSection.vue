@@ -24,7 +24,7 @@
           hide-details
           style="min-width: 160px"
           ><template #item="{ item }"
-            ><p :id="item.text">{{ item.text }}</p></template
+            ><p :id="item.id">{{ item.text }}</p></template
           ></v-select
         >
       </v-col>
@@ -40,7 +40,7 @@
           hide-details
           style="min-width: 160px"
           ><template #item="{ item }"
-            ><p :id="item.text">{{ item.text }}</p></template
+            ><p :id="item.id">{{ item.text }}</p></template
           ></v-select
         >
       </v-col>
@@ -56,7 +56,7 @@
           hide-details
           style="min-width: 160px"
           ><template #item="{ item }"
-            ><p :id="item.text">{{ item.text }}</p></template
+            ><p :id="item.id">{{ item.text }}</p></template
           ></v-select
         >
       </v-col>
@@ -108,23 +108,23 @@ export default {
         localization: null,
       },
       statuses: [
-        { text: "Wszystkie", value: null },
-        { text: "Zwrócony", value: "Zwrócony" },
-        { text: "Gotowy do wysyłki", value: "Gotowy do wysyłki" },
-        { text: "Wysłany", value: "Wysłany" },
-        { text: "Zmiana lokalizacji", value: "Zmiana lokalizacji" },
-        { text: "Przyjęcie na stan", value: "Przyjęcie na stan" },
+        { text: "Wszystkie", value: null, id:"Wszystkie_status" },
+        { text: "Zwrócony", value: "Zwrócony", id:"Zwrocony" },
+        { text: "Gotowy do wysyłki", value: "Gotowy do wysyłki", id:"Gotowy" },
+        { text: "Wysłany", value: "Wysłany", id:"Wyslany" },
+        { text: "Zmiana lokalizacji", value: "Zmiana lokalizacji", id:"Zmiana" },
+        { text: "Przyjęcie na stan", value: "Przyjęcie na stan", id:"Przyjecie" },
       ],
       localizations: [
-        { text: "Wszystkie", value: null },
-        { text: "PVC", value: "B_PVC" },
-        { text: "ALU", value: "B_ALU" },
-        { text: "DRE", value: "B_DRE" },
+        { text: "Wszystkie", value: null, id:"Wszystkie_lokalizacja" },
+        { text: "PVC", value: "B_PVC", id:"PVC" },
+        { text: "ALU", value: "B_ALU", id:"ALU" },
+        { text: "DRE", value: "B_DRE", id:"DRE" },
       ],
       deadlines: [
-        { text: "Wszystkie", value: null },
-        { text: "Zbliżający się termin", value: 1 },
-        { text: "Po terminie", value: 2 },
+        { text: "Wszystkie", value: null, id:"Wszystkie_deadlines" },
+        { text: "Zbliżający się termin", value: 1, id:"Zblizajacy_sie_termin" },
+        { text: "Po terminie", value: 2, id:"Po_terminie" },
       ],
     };
   },

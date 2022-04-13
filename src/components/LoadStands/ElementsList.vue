@@ -23,7 +23,7 @@
             <v-btn
               :id="`delete-element-${index}`"
               x-large
-              @click="deleteStand(item)"
+              @click="deleteElemenet(item)"
               icon
             >
               <v-icon color="red lighten-1">mdi-delete-outline</v-icon>
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     ...mapActions(["assignStandLoad", "assignDeleted"]),
-    deleteStand(element) {
+    deleteElemenet(element) {
       const newData = [...this.standLoad];
       const prevIndex = this.standLoad.findIndex((item) => item === element);
       if (Object.prototype.hasOwnProperty.call(element, "id")) {

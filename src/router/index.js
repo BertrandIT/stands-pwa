@@ -44,6 +44,11 @@ const routes = [
     name: "standDetails",
     component: () => import("../views/StandDetails.vue"),
   },
+  {
+    path: "/repaintStands",
+    name: "repaintStands",
+    component: () => import("../views/RepaintStands.vue"),
+  },
 ];
 
 const router = new VueRouter({

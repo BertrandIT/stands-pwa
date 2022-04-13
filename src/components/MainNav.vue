@@ -1,8 +1,10 @@
 <template>
   <v-app-bar app color="primary" dark>
-    <router-link to="/"><v-btn text>Stojaki</v-btn></router-link>
+    <router-link to="/"
+      ><v-btn @click="resetState" text>Stojaki</v-btn></router-link
+    >
     <router-link v-if="user.email" to="/"
-      ><v-btn text @click="logout"
+      ><v-btn id="logout" text @click="logout"
         ><v-icon>mdi-account</v-icon>
         <p class="mt-4">{{ user.email }}</p></v-btn
       ></router-link
@@ -21,7 +23,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["loginUser"]),
+    ...mapActions(["loginUser", "resetState"]),
     logout() {
       this.loginUser({});
       localStorage.removeItem("user");

@@ -23,8 +23,10 @@
 <script>
 import axios from "@/axios";
 import StandList from "@/components/SendStands/StandList.vue";
+import loginCheck from "@/mixins/loginCheck";
 
 export default {
+  mixins: [loginCheck],
   components: { StandList },
   data() {
     return {

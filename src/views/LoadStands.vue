@@ -9,9 +9,11 @@
 import ChooseStand from "@/components/LoadStands/ChooseStand.vue";
 import StandLoad from "@/components/LoadStands/StandLoad.vue";
 import { mapState } from "vuex";
+import loginCheck from "@/mixins/loginCheck";
 
 export default {
   components: { ChooseStand, StandLoad },
+  mixins: [loginCheck],
   data() {
     return {};
   },
