@@ -77,7 +77,13 @@ export default {
               daysleft,
             },
           ]);
-          if (!isNaN(daysleft) && daysleft <= 0) {
+          if (!isNaN(daysleft) && daysleft <= -90) {
+            this.$root.manageAlert({
+              text: `Stojak do przemalowania`,
+              type: "error",
+              time: 3000,
+            });
+          } else if (!isNaN(daysleft) && daysleft <= 0) {
             this.$root.manageAlert({
               text: `Dodano stojak, którego deadline jest przekroczony`,
               type: "error",
