@@ -7,7 +7,7 @@ export default {
         const res = await axios.get(`/api/windowStandPwa/${barcode}`);
         if (res.data) {
           var deadline = new Date(res.data.deadline);
-          deadline.setMonth(deadline.getMonth() + 2);
+          deadline.setMonth(deadline.getMonth() + 3);
           if (notAllowedStatuses.includes(res.data.action)) {
             this.$root.manageAlert({
               text: `Nie można zwrócić tego stojaka, ponieważ ma status ${res.data.action}`,

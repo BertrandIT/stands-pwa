@@ -30,6 +30,9 @@ export default {
       overlay: false,
     };
   },
+  created() {
+    this.getStands();
+  },
   computed: {
     filteredStands() {
       const filters = Object.keys(this.filters);

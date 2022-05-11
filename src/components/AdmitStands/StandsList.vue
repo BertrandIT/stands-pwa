@@ -23,11 +23,7 @@
                     : null
                 "
               >
-                {{
-                  isNaN(item.daysleft)
-                    ? item.daysleft
-                    : `Deadline za ${item.daysleft} dni`
-                }}
+                {{ deadlineInfo(item.daysleft) }}
               </p></v-list-item-subtitle
             >
           </v-list-item-content>
@@ -64,6 +60,17 @@ export default {
       const prevIndex = this.stands.findIndex((item) => item === stand);
       newData.splice(prevIndex, 1);
       this.assignStands(newData);
+    },
+    deadlineInfo(daysleft) {
+      if (isNaN(daysleft)) {
+        return daysleft;
+      } else if (daysleft <= -90) {
+        return "Stojak do przemalowania";
+      } else if (daysleft <= 0) {
+        return `Przekoczono deadline o ${Math.abs(daysleft)} dni`;
+      } else {
+        return `Deadline za ${daysleft} dni`;
+      }
     },
   },
 };

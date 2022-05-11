@@ -157,7 +157,7 @@ export default {
     async save() {
       if (this.stands.length) {
         try {
-          await axios.post("http://127.0.0.1:8081/api/repaintStands", {
+          await axios.post("http://192.168.1.6:8081/api/repaintStands", {
             user: this.$store.state.user.email,
             stands: this.stands,
           });
