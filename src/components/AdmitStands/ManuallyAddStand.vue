@@ -70,6 +70,7 @@ export default {
         } else {
           const res = await axios.get(`api/windowStand/${this.standBarcode}`);
           const daysleft = this.calcDeadline(res.data.deadline);
+          console.log(!isNaN(daysleft));
           this.assignStands([
             ...this.stands,
             {
@@ -83,7 +84,7 @@ export default {
               type: "error",
               time: 3000,
             });
-          } else if (!isNaN(daysleft) && daysleft <= 0) {
+          } else if (!isNaN(daysleft) && daysleft !== null && daysleft <= 0) {
             this.$root.manageAlert({
               text: `Dodano stojak, którego deadline jest przekroczony`,
               type: "error",

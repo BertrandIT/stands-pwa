@@ -116,6 +116,7 @@ export default {
         "SDL-",
         "BZAM-",
         "BPAL-",
+        "BZ-P-",
       ],
     };
   },
@@ -193,7 +194,8 @@ export default {
                 barcode: data.commande + "/" + data.chassis,
                 commande: response.data.commande,
                 chassis: data.chassis,
-                base: response.data.base === "" ? "8" : response.data.base,
+                base:
+                  response.data.base === "" ? "winpro8" : response.data.base,
                 client: response.data.client,
                 description: data.description,
                 user: this.user.email,
