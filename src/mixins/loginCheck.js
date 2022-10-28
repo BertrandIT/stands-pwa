@@ -9,7 +9,7 @@ export default {
   created() {
     if (localStorage.getItem("user")) {
       this.loginUser(JSON.parse(localStorage.getItem("user")));
-    } else if (!this.user.email) {
+    } else if (!this.user.username) {
       this.$router.push("/");
     }
   },

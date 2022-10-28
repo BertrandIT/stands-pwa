@@ -156,14 +156,14 @@ export default {
           );
           console.log(stand);
           return {
-            user: this.$store.state.user.email,
+            user: this.$store.state.user.username,
             windowStandId: stand.windowStandId,
             client: stand.client,
             base: stand.base === "" ? "8" : stand.base,
             load_number: stand.load_number,
           };
         });
-        await axios.post("http://192.168.1.6:8081/api/sendStands", {
+        await axios.post("http://192.168.1.4:8082/api/sendStands", {
           sentStands,
         });
         this.selectedStands = [];

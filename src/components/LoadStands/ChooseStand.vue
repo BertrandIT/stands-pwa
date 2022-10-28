@@ -175,7 +175,7 @@ export default {
                 win.barcode === win.commande
                   ? win.barcode + "/" + win.chassis
                   : win.barcode,
-              user: this.user.email,
+              user: this.user.username,
             }))
           );
         })

@@ -3,10 +3,10 @@
     <router-link to="/"
       ><v-btn @click="resetState" text>Stojaki</v-btn></router-link
     >
-    <router-link v-if="user.email" to="/"
+    <router-link v-if="user.username" to="/"
       ><v-btn id="logout" text @click="logout"
         ><v-icon>mdi-account</v-icon>
-        <p class="mt-4">{{ user.email }}</p></v-btn
+        <p class="mt-4">{{ user.username }}</p></v-btn
       ></router-link
     >
     <v-spacer></v-spacer>

@@ -105,7 +105,7 @@ export default {
                     ? "8"
                     : response.data[0].winpro,
                 client: response.data[0].client,
-                user: this.user.email,
+                user: this.user.username,
               },
             ]);
             this.$root.manageAlert({
@@ -138,7 +138,7 @@ export default {
     async sendEmptyStand() {
       await axios
         .patch(
-          `http://192.168.1.6:8081/api/massStandLoad/${this.standToLoad.id}`,
+          `http://192.168.1.4:8082/api/massStandLoad/${this.standToLoad.id}`,
           {
             storedItems: this.standLoad,
           }
@@ -161,11 +161,11 @@ export default {
     async editStandLoad() {
       await axios
         .patch(
-          `http://192.168.1.6:8081/api/updateLoad/${this.standToLoad.id}`,
+          `http://192.168.1.4:8082/api/updateLoad/${this.standToLoad.id}`,
           {
             items: this.standLoad,
             deleted: this.deleted,
-            user: this.user.email,
+            user: this.user.username,
           }
         )
         .then(() => {

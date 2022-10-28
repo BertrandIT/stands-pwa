@@ -170,7 +170,7 @@ export default {
                     ? "8"
                     : response.data[0].winpro,
                 client: response.data[0].client,
-                user: this.user.email,
+                user: this.user.username,
               },
             ]);
             this.overlay = false;
@@ -207,7 +207,7 @@ export default {
         {
           barcode: this.elementCode,
           ...this.ordersToChoose[this.selectedOrderId],
-          user: this.user.email,
+          user: this.user.username,
         },
       ]);
       this.$root.manageAlert({

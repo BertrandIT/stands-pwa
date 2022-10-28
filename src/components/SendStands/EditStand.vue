@@ -114,8 +114,8 @@ export default {
         const items = this.items.filter((item) =>
           this.selectedItems.includes(item.id)
         );
-        await axios.post("http://192.168.1.6:8081/api/relocateItems", {
-          user: this.$store.state.user.email,
+        await axios.post("http://192.168.1.4:8082/api/relocateItems", {
+          user: this.$store.state.user.username,
           newStand: this.newStand,
           oldStandId: this.windowStandId,
           items,

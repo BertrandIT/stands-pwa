@@ -185,7 +185,7 @@ export default {
     },
     async addOrder(data) {
       await axios
-        .get(`checkIfCommandeExists?commande=${data.commande}`)
+        .get(`api/checkIfCommandeExists?commande=${data.commande}`)
         .then((response) => {
           if (response.data) {
             this.assignStandLoad([
@@ -198,7 +198,7 @@ export default {
                   response.data.base === "" ? "winpro8" : response.data.base,
                 client: response.data.client,
                 description: data.description,
-                user: this.user.email,
+                user: this.user.username,
               },
             ]);
             this.overlay = false;

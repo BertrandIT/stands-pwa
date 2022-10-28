@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row v-if="user.email">
+    <v-row v-if="user.username">
       <v-col
         v-for="(tab, idx) of tabs"
         :key="idx"
@@ -87,7 +87,7 @@ export default {
           } else {
             user.deadlineOverride = await this.checkPermission({
               rightTitle: "stand-deadline-override",
-              user: user.email,
+              user: user.username,
             });
             this.loginUser(user);
             localStorage.setItem("user", JSON.stringify(user));
