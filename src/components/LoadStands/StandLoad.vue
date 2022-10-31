@@ -138,7 +138,7 @@ export default {
     async sendEmptyStand() {
       await axios
         .patch(
-          `http://192.168.1.4:8082/api/massStandLoad/${this.standToLoad.id}`,
+          `http://127.0.0.1:8001/api/massStandLoad/${this.standToLoad.id}`,
           {
             storedItems: this.standLoad,
           }
@@ -160,14 +160,11 @@ export default {
     },
     async editStandLoad() {
       await axios
-        .patch(
-          `http://192.168.1.4:8082/api/updateLoad/${this.standToLoad.id}`,
-          {
-            items: this.standLoad,
-            deleted: this.deleted,
-            user: this.user.username,
-          }
-        )
+        .patch(`http://127.0.0.1:8001/api/updateLoad/${this.standToLoad.id}`, {
+          items: this.standLoad,
+          deleted: this.deleted,
+          user: this.user.username,
+        })
         .then(() => {
           this.$root.manageAlert({
             text: `Pomyślnie załadowano stojak`,

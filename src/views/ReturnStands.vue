@@ -93,13 +93,10 @@ export default {
       if (this.stands.length) {
         const stands = this.stands.map((stand) => stand.id);
         try {
-          await axios.post(
-            "http://192.168.1.4:8082/api/returnStandsToSupplier",
-            {
-              user: this.$store.state.user.username,
-              stands,
-            }
-          );
+          await axios.post("http://127.0.0.1:8001/api/returnStandsToSupplier", {
+            user: this.$store.state.user.username,
+            stands,
+          });
           this.$root.manageAlert({
             text: "Zwrócono zeskanowane stojaki",
             type: "success",

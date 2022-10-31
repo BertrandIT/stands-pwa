@@ -122,7 +122,7 @@ export default {
     async saveStands() {
       this.overlay = true;
       await axios
-        .post("http://192.168.1.4:8082/api/savestands", {
+        .post("http://127.0.0.1:8001/api/savestands", {
           ...this.standsData,
           windowStands: this.stands,
           user: this.user.username,

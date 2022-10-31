@@ -45,10 +45,12 @@
               />
             </v-col>
           </v-row>
-          <v-text-field
-            v-model="description"
-            :label="isWindow ? 'Ilość szyb' : 'Opis'"
-          />
+          <v-text-field v-if="!isWindow" v-model="description" label="Opis" />
+          <v-row v-if="glasses">
+            <v-col>
+              <GlassList ref="glasslist" :glasses="glasses" />
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-card-actions class="justify-end">
           <v-btn
@@ -62,21 +64,23 @@
             "
             >Anuluj</v-btn
           >
-          <v-btn id="dialog-submit-button" text @click="selectOrder"
-            >Zatwierdź</v-btn
-          >
+          <v-btn id="dialog-submit-button" text @click="selectOrder">{{
+            isWindow && !glasses.length ? "Pobierz szyby" : "Zatwierdź"
+          }}</v-btn>
         </v-card-actions>
       </v-card>
     </template>
     <v-overlay :value="overlay">
-      <v-progress-circular indeterminate size="50"></v-progress-circular>
+      <v-progress-circular indeterminate size="50" />
     </v-overlay>
   </v-dialog>
 </template>
 <script>
 import axios from "axios";
 import { mapState, mapActions } from "vuex";
+import GlassList from "./GlassList.vue";
 export default {
+  components: { GlassList },
   props: {
     otherLoadDialog: { type: Boolean, required: true },
     isWindow: { type: Boolean, required: true },
@@ -90,6 +94,7 @@ export default {
       order: "",
       chassis: "",
       description: "",
+      glasses: [],
       items: [
         "ZAM-",
         "Z-P-",
@@ -134,6 +139,8 @@ export default {
       this.order = "";
       this.chassis = "";
       this.description = "";
+      this.glasses = [];
+      this.$refs.glasslist.selectedGlasses = [];
     },
     async selectOrder() {
       this.overlay = true;
@@ -150,8 +157,7 @@ export default {
       } else if (
         this.selectedOrder &&
         (this.year || this.selectedOrder === "ALU") &&
-        this.order &&
-        !(this.isWindow && !this.description)
+        this.order
       ) {
         let newOrder = this.order;
         if (this.order.includes("AO")) {
@@ -159,7 +165,7 @@ export default {
             "AO-" +
             this.order.trim().toUpperCase().split("-")[1].padStart(5, "0");
         }
-        await this.addOrder({
+        await this.confirmActions({
           commande:
             this.selectedOrder === "ALU"
               ? newOrder
@@ -168,12 +174,6 @@ export default {
                 "-" +
                 this.order.trim().toUpperCase().padStart(5, "0"),
           chassis: this.chassis.padStart(3, "0"),
-          description: this.isWindow
-            ? `Szyby ${this.description} szt.`
-            : this.description,
-        }).then(() => {
-          this.clearData();
-          this.closeDialog();
         });
       } else {
         this.overlay = false;
@@ -199,6 +199,8 @@ export default {
                 client: response.data.client,
                 description: data.description,
                 user: this.user.username,
+                user_id: this.user.id,
+                selectedGlasses: data.selectedGlasses ?? null,
               },
             ]);
             this.overlay = false;
@@ -207,6 +209,7 @@ export default {
               type: "success",
             });
             this.clearData();
+            this.closeDialog();
           } else {
             this.overlay = false;
             this.$root.manageAlert({
@@ -215,6 +218,37 @@ export default {
             });
           }
         });
+    },
+    async getGlass(data) {
+      await axios
+        .get(
+          `api/getglassfororder?commande=${data.commande}&chassis=${data.chassis}`
+        )
+        .then((response) => {
+          if (response.data) {
+            this.glasses = response.data;
+          } else {
+            this.overlay = false;
+            this.$root.manageAlert({
+              text: "Nie znaleziono szyb dla podanego zlecenia",
+              type: "error",
+            });
+          }
+        });
+    },
+    async confirmActions(data) {
+      if (!this.isWindow) {
+        await this.addOrder(data);
+      } else if (this.$refs.glasslist.selectedGlasses.length) {
+        await this.addOrder({
+          ...data,
+          description:
+            "Szyby " + this.$refs.glasslist.selectedGlasses.length + " szt.",
+          selectedGlasses: this.$refs.glasslist.selectedGlasses,
+        });
+      } else {
+        await this.getGlass(data);
+      }
     },
   },
 };
