@@ -86,7 +86,7 @@ export default {
             });
           } else {
             user.deadlineOverride = await this.checkPermission({
-              rightTitle: "stand-deadline-override",
+              rightTitle: "stand_deadline_override",
               user: user.username,
             });
             this.loginUser(user);
