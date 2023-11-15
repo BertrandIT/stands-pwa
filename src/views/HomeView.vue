@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import axios from "@/axios";
+
 import { mapState, mapActions } from "vuex";
 // @ is an alias to /src
 export default {
@@ -68,13 +68,13 @@ export default {
   methods: {
     ...mapActions(["loginUser"]),
     async checkPermission({ rightTitle, user }) {
-      const res = await axios.get(`api/checkrightstands/${user}/${rightTitle}`);
+      const res = await this.$axiosBBS.get(`checkrightstands/${user}/${rightTitle}`);
       return !!(res.data && +res.data === 1);
     },
     async login() {
-      await axios
+      await this.$axiosBBS
         .get(
-          "api/usershow/" + this.userlogin.toUpperCase() + "/" + this.password
+          "usershow/" + this.userlogin.toUpperCase() + "/" + this.password
         )
         .then(async (response) => {
           const { user } = response.data;

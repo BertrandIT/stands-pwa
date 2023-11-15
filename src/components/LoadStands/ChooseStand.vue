@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import axios from "@/axios.js";
+
 import { mapActions, mapState } from "vuex";
 import calcDaysLeft from "@/mixins/calcDaysLeft.js";
 export default {
@@ -87,7 +87,7 @@ export default {
     ...mapActions(["assignStandToLoad", "assignStandLoad"]),
     async addStand(standBarcode = null) {
       const barcode = this.handleBarcode(standBarcode);
-      await axios.get("api/windowStand/" + barcode).then((response) => {
+      await this.$axiosBBS.get("windowStand/" + barcode).then((response) => {
         const daysleft = this.calcDeadline(response.data.deadline);
         if (response.data === "Item not found") {
           this.$root.manageAlert({
@@ -165,8 +165,8 @@ export default {
       }
     },
     async getLoadInfo(id) {
-      await axios
-        .get("api/lastload/" + id)
+      await this.$axiosBBS
+        .get("lastload/" + id)
         .then((response) => {
           this.assignStandLoad(
             response.data.map((win) => ({

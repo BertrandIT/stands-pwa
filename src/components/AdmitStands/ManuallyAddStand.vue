@@ -36,7 +36,7 @@
   </v-container>
 </template>
 <script>
-import axios from "axios";
+
 import { mapState, mapActions } from "vuex";
 import calcDaysLeft from "@/mixins/calcDaysLeft.js";
 export default {
@@ -68,8 +68,8 @@ export default {
             time: 1500,
           });
         } else {
-          const res = await axios.get(`api/windowStand/${this.standBarcode}`);
-          const daysleft = this.calcDeadline(res.data.deadline);
+          const res = await this.$axiosBBS.get(`windowStand/${this.standBarcode}`);
+          const daysleft = this.calcDeadline(res.data.action == 'Zwrócony' ? undefined : res.data.deadline, );
           console.log(!isNaN(daysleft));
           this.assignStands([
             ...this.stands,
@@ -84,7 +84,7 @@ export default {
               type: "error",
               time: 3000,
             });
-          } else if (!isNaN(daysleft) && daysleft !== null && daysleft <= 0) {
+          } else if (!isNaN(daysleft) && daysleft !== null && daysleft <= 0 && res.data.action != 'Zwrócony') {
             this.$root.manageAlert({
               text: `Dodano stojak, którego deadline jest przekroczony`,
               type: "error",
@@ -126,8 +126,8 @@ export default {
       } else {
         const res =
           type === "DREWNO"
-            ? await axios.get(`api/woodstandnumber`)
-            : await axios.get(`api/bbstandnumber`);
+            ? await this.$axiosBBS.get(`woodstandnumber`)
+            : await this.$axiosBBS.get(`bbstandnumber`);
         this.assignStands([
           ...this.stands,
           { barcode: type + (res.data[0].num + 1), daysleft: null },

@@ -76,7 +76,7 @@
   </v-dialog>
 </template>
 <script>
-import axios from "axios";
+
 import { mapState, mapActions } from "vuex";
 import GlassList from "./GlassList.vue";
 export default {
@@ -184,8 +184,8 @@ export default {
       }
     },
     async addOrder(data) {
-      await axios
-        .get(`api/checkIfCommandeExists?commande=${data.commande}`)
+      await this.$axiosBBS
+        .get(`checkIfCommandeExists?commande=${data.commande}`)
         .then((response) => {
           if (response.data) {
             this.assignStandLoad([
@@ -220,12 +220,12 @@ export default {
         });
     },
     async getGlass(data) {
-      await axios
+      await this.$axiosBBS
         .get(
-          `api/getglassfororder?commande=${data.commande}&chassis=${data.chassis}`
+          `getglassfororder?commande=${data.commande}&chassis=${data.chassis}`
         )
         .then((response) => {
-          if (response.data) {
+          if (response.data.length) {
             this.glasses = response.data;
           } else {
             this.overlay = false;

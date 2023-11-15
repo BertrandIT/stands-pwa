@@ -46,7 +46,7 @@
 <script>
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
 import checkStand from "@/mixins/checkStand";
-import axios from "@/axios";
+
 import { mapActions } from "vuex";
 import loginCheck from "@/mixins/loginCheck";
 
@@ -93,7 +93,7 @@ export default {
       if (this.stands.length) {
         const stands = this.stands.map((stand) => stand.id);
         try {
-          await axios.post("http://127.0.0.1:8001/api/returnStandsToSupplier", {
+          await this.$axiosDjango.post("returnStandsToSupplier", {
             user: this.$store.state.user.username,
             stands,
           });

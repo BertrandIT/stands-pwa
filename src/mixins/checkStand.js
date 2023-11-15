@@ -1,10 +1,10 @@
-import axios from "@/axios";
+
 
 export default {
   methods: {
     async checkStand({ barcode, notAllowedStatuses }) {
       if (barcode) {
-        const res = await axios.get(`/api/windowStandPwa/${barcode}`);
+        const res = await this.$axiosBBS.get(`windowStandPwa/${barcode}`);
         if (res.data) {
           var deadline = new Date(res.data.deadline);
           deadline.setMonth(deadline.getMonth() + 3);

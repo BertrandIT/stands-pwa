@@ -41,7 +41,7 @@
   </div>
 </template>
 <script>
-import axios from "@/axios";
+
 import loginCheck from "@/mixins/loginCheck";
 
 export default {
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     async getStandLogs(standId) {
-      const res = await axios.get(`/api/showLoads/${standId}`);
+      const res = await this.$axiosBBS.get(`showLoadsBBS/${standId}`);
       this.logs = res.data;
     },
   },

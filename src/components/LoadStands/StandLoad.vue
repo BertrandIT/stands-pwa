@@ -42,8 +42,9 @@
 // @ is an alias to /src
 import ManuallyAddElement from "@/components/LoadStands/ManuallyAddElement.vue";
 import ElementsList from "@/components/LoadStands/ElementsList.vue";
-import { mapState, mapActions } from "vuex";
-import axios from "@/axios";
+import { mapState, mapActions, mapMutations } from "vuex";
+
+
 
 export default {
   components: { ManuallyAddElement, ElementsList },
@@ -62,7 +63,8 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["assignStandLoad", "assignStandToLoad", "clearStandToLoad"]),
+    ...mapActions(["assignStandLoad", "assignStandToLoad"]),
+    ...mapMutations(["clearStandToLoad"]),
     async addElement(elementCode) {
       if (elementCode) {
         let element = {
@@ -89,8 +91,8 @@ export default {
       return found;
     },
     async getWholeOrderForBarcode(barcode) {
-      await axios
-        .get(`/api/findBarcodeInAllBasesPwa?barcode=${barcode}`)
+      await this.$axiosBBS
+        .get(`findBarcodeInAllBasesPwa?barcode=${barcode}`)
         .then((response) => {
           if (response.data.length == 1) {
             this.getDeliveryDate(barcode);
@@ -136,9 +138,9 @@ export default {
       }
     },
     async sendEmptyStand() {
-      await axios
+      await this.$axiosDjango
         .patch(
-          `http://127.0.0.1:8001/api/massStandLoad/${this.standToLoad.id}`,
+          `massStandLoad/${this.standToLoad.id}`,
           {
             storedItems: this.standLoad,
           }
@@ -159,8 +161,8 @@ export default {
         });
     },
     async editStandLoad() {
-      await axios
-        .patch(`http://127.0.0.1:8001/api/updateLoad/${this.standToLoad.id}`, {
+      await this.$axiosDjango
+        .patch(`updateLoad/${this.standToLoad.id}`, {
           items: this.standLoad,
           deleted: this.deleted,
           user: this.user.username,

@@ -58,7 +58,7 @@ import CodeScanner from "@/components/CodeScanner.vue";
 import ManuallyAddStand from "@/components/AdmitStands/ManuallyAddStand.vue";
 import StandsList from "@/components/AdmitStands/StandsList.vue";
 import { mapState, mapActions } from "vuex";
-import axios from "@/axios.js";
+
 
 export default {
   name: "satnds-preview",
@@ -121,8 +121,9 @@ export default {
     },
     async saveStands() {
       this.overlay = true;
-      await axios
-        .post("http://127.0.0.1:8001/api/savestands", {
+      await this.$axiosDjango
+        .post("savestands", {
+        // .post("http://192.168.1.4:8082/api/savestands", {
           ...this.standsData,
           windowStands: this.stands,
           user: this.user.username,

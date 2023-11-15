@@ -45,7 +45,8 @@
 
 <script>
 import ScannedStands from "../components/ReturnStands/ScannedStands.vue";
-import axios from "@/axios";
+
+
 import loginCheck from "@/mixins/loginCheck";
 
 export default {
@@ -72,7 +73,7 @@ export default {
     },
     async checkStand(barcode) {
       if (barcode) {
-        const res = await axios.get(`/api/windowStandPwa/${barcode}`);
+        const res = await this.$axiosBBS.get(`windowStandPwa/${barcode}`);
         if (res.data) {
           var deadline = new Date(res.data.deadline);
           deadline.setMonth(deadline.getMonth() + 2);
@@ -129,7 +130,7 @@ export default {
           time: 1500,
         });
       } else {
-        const res = await axios.get(`api/bbstandnumber`);
+        const res = await this.$axiosBBS.get(`bbstandnumber`);
         this.stands.push({
           ...stand,
           barcode: `BB${res.data[0].num + 1}`,
@@ -157,7 +158,7 @@ export default {
     async save() {
       if (this.stands.length) {
         try {
-          await axios.post("http://127.0.0.1:8001/api/repaintStands", {
+          await this.$axiosDjango.post("repaintStands", {
             user: this.$store.state.user.username,
             stands: this.stands,
           });

@@ -62,7 +62,7 @@
 </template>
 <script>
 import checkStand from "@/mixins/checkStand";
-import axios from "@/axios";
+
 export default {
   mixins: [checkStand],
   props: {
@@ -114,7 +114,7 @@ export default {
         const items = this.items.filter((item) =>
           this.selectedItems.includes(item.id)
         );
-        await axios.post("http://127.0.0.1:8001/api/relocateItems", {
+        await this.$axiosDjango.post("relocateItems", {
           user: this.$store.state.user.username,
           newStand: this.newStand,
           oldStandId: this.windowStandId,

@@ -79,7 +79,8 @@
 </template>
 <script>
 import EditStand from "@/components/SendStands/EditStand.vue";
-import axios from "@/axios";
+
+
 
 export default {
   components: { EditStand },
@@ -124,7 +125,7 @@ export default {
       return tokens || [];
     },
     async getStandItems(windowStandId) {
-      const res = await axios.get(`/api/standItems/${windowStandId}`);
+      const res = await this.$axiosBBS.get(`standItems/${windowStandId}`);
       return res.data.length ? res.data : [];
     },
     async editStand(item) {
@@ -163,7 +164,7 @@ export default {
             load_number: stand.load_number,
           };
         });
-        await axios.post("http://127.0.0.1:8001/api/sendStands", {
+        await this.$axiosDjango.post("sendStands", {
           sentStands,
         });
         this.selectedStands = [];

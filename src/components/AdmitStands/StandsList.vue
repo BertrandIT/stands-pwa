@@ -16,7 +16,7 @@
             ></v-list-item-title>
             <v-list-item-subtitle class="text-subtitle-1 text-uppercase"
               ><p
-                v-if="item.daysleft"
+                v-if="item.daysleft && item.action != 'Zwrócony'"
                 :class="
                   item.daysleft <= 0
                     ? 'red--text font-weight-bold text--lighten-1'

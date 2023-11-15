@@ -21,7 +21,7 @@
   </v-container>
 </template>
 <script>
-import axios from "@/axios";
+
 import StandList from "@/components/SendStands/StandList.vue";
 import loginCheck from "@/mixins/loginCheck";
 
@@ -60,7 +60,7 @@ export default {
   methods: {
     async getStandsReadyToGo() {
       this.overlay = true;
-      const res = await axios.get("/api/standsReadyToGo");
+      const res = await this.$axiosBBS.get("standsReadyToGo");
       this.stands = res.data;
       this.overlay = false;
     },

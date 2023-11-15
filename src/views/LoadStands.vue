@@ -17,6 +17,10 @@ export default {
   data() {
     return {};
   },
+  created(){
+    console.log(process.env.VUE_APP_SAFE_OPERATIONS_ENDPOINT_ADDRESS)
+    console.log(process.env.VUE_APP_NON_SAFE_OPERATIONS_ENDPOINT_ADDRESS)
+  },
   computed: {
     ...mapState({
       standToLoad: (state) => state.standToLoad,

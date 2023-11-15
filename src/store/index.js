@@ -48,6 +48,7 @@ export default new Vuex.Store({
     },
     clearStandToLoad(state) {
       state.standToLoad = {};
+      state.standLoad = [];
     },
     setUserData(state, data) {
       state.user = data;

@@ -92,7 +92,7 @@
   </v-container>
 </template>
 <script>
-import axios from "axios";
+
 import { mapState, mapActions } from "vuex";
 import OtherLoadDialog from "@/components/LoadStands/OtherLoadDialog.vue";
 export default {
@@ -122,7 +122,7 @@ export default {
   methods: {
     ...mapActions(["assignStandLoad", "assignElementBarcode"]),
     async getDeliveryDate(barcode) {
-      await axios.get("api/deliveryDate/" + barcode).then((response) => {
+      await this.$axiosBBS.get("deliveryDate/" + barcode).then((response) => {
         this.$emit("setDeliveryDate", response.data);
       });
     },
@@ -154,8 +154,8 @@ export default {
       return found;
     },
     async getWholeOrderForBarcode(barcode) {
-      await axios
-        .get(`/api/findBarcodeInAllBasesPwa?barcode=${barcode}`)
+      await this.$axiosBBS
+        .get(`findBarcodeInAllBasesPwa?barcode=${barcode}`)
         .then((response) => {
           if (response.data.length == 1) {
             this.getDeliveryDate(barcode);

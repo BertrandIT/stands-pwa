@@ -10,7 +10,7 @@
 <script>
 import FiltersSection from "@/components/HistoryView/FiltersSection.vue";
 import StandList from "@/components/HistoryView/StandList.vue";
-import axios from "@/axios";
+
 import loginCheck from "@/mixins/loginCheck";
 
 export default {
@@ -72,7 +72,7 @@ export default {
       //   }`
       // );
       this.overlay = true;
-      const res = await axios.get("/api/standsHistoryPwa");
+      const res = await this.$axiosBBS.get("standsHistoryPwa");
       this.stands = res.data;
       this.overlay = false;
     },
