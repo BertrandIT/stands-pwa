@@ -155,7 +155,6 @@ export default {
           const stand = this.stands.find(
             (item) => item.windowStandId === standId
           );
-          console.log(stand);
           return {
             user: this.$store.state.user.username,
             windowStandId: stand.windowStandId,

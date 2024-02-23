@@ -70,7 +70,6 @@ export default {
         } else {
           const res = await this.$axiosBBS.get(`windowStand/${this.standBarcode}`);
           const daysleft = this.calcDeadline(res.data.action == 'Zwrócony' ? undefined : res.data.deadline, );
-          console.log(!isNaN(daysleft));
           this.assignStands([
             ...this.stands,
             {

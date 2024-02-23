@@ -238,7 +238,7 @@ export default {
     },
     async confirmActions(data) {
       if (!this.isWindow) {
-        await this.addOrder(data);
+        await this.addOrder({...data, description: this.description});
       } else if (this.$refs.glasslist.selectedGlasses.length) {
         await this.addOrder({
           ...data,
