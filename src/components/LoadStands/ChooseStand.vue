@@ -121,13 +121,7 @@ export default {
             ...response.data,
             wasEmpty: false,
           };
-        } else if (!isNaN(daysleft) && daysleft <= 0) {
-          this.deadlineExceeded({
-            barcode,
-            ...response.data,
-            wasEmpty: true,
-          });
-        } else {
+        }  else {
           this.assignStandToLoad({
             barcode,
             ...response.data,
