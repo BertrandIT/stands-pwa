@@ -9,4 +9,7 @@ module.exports = defineConfig({
     // port: 7000,
     // headers: { 'Access-Control-Allow-Origin': '*' },
   },
+
+  pwa: {
+  }
 });
