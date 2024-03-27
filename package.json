@@ -11,9 +11,10 @@
     },
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
-        "@mdi/font": "5.9.55",
+        "@mdi/font": "^5.9.55",
         "axios": "^0.26.0",
         "core-js": "^3.8.3",
+        "material-design-icons-iconfont": "^6.7.0",
         "register-service-worker": "^1.7.2",
         "roboto-fontface": "*",
         "selenium-webdriver": "^4.1.1",

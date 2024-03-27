@@ -7,29 +7,36 @@
       :height="($root.windowHeight / 5) * 2"
     >
       <template #default="{ item, index }">
-        <v-list-item :key="index">
-          <v-list-item-content>
-            <v-list-item-title
-              class="text-h6 mt-4 font-weight-bold text-uppercase"
-              v-text="
+        <div
+          class="mt-6"
+          style="
+            display: flex;
+            direction: row;
+            font-weight: bold;
+            font-size: larger;
+          "
+        >
+          <div style="width: 100%; display: flex">
+            <div style="width: 270px">
+              {{
                 item.description
                   ? `${item.barcode} ${item.description}`
                   : item.barcode
-              "
-            ></v-list-item-title>
-          </v-list-item-content>
-
-          <v-list-item-action>
-            <v-btn
-              :id="`delete-element-${index}`"
-              x-large
-              @click="deleteElemenet(item)"
-              icon
-            >
-              <v-icon color="red lighten-1">mdi-delete-outline</v-icon>
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
+              }}
+            </div>
+            <div>
+              <v-btn
+                :id="`delete-element-${index}`"
+                @click="deleteElemenet(item)"
+                color="red"
+                dark
+              >
+                Usuń
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </div>
       </template>
     </v-virtual-scroll>
   </v-container>
