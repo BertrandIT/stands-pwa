@@ -44,8 +44,6 @@ import ManuallyAddElement from "@/components/LoadStands/ManuallyAddElement.vue";
 import ElementsList from "@/components/LoadStands/ElementsList.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
 
-
-
 export default {
   components: { ManuallyAddElement, ElementsList },
   data() {
@@ -132,19 +130,16 @@ export default {
       if (this.elementBarcode) {
         this.$refs.addelement.addElement();
       } else if (this.standToLoad.wasEmpty) {
-        await this.sendEmptyStand();
+        await this.loadNewStand();
       } else {
         await this.editStandLoad();
       }
     },
-    async sendEmptyStand() {
+    async loadNewStand() {
       await this.$axiosDjango
-        .patch(
-          `massStandLoad/${this.standToLoad.id}`,
-          {
-            storedItems: this.standLoad,
-          }
-        )
+        .patch(`massStandLoad/${this.standToLoad.id}`, {
+          storedItems: this.standLoad,
+        })
         .then(() => {
           this.$root.manageAlert({
             text: `Pomyślnie załadowano stojak`,

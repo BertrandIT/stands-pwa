@@ -6,7 +6,7 @@
           <v-list-item v-for="(item, index) of glasses" :key="index">
             <v-card
               width="100%"
-              @click="toggleSelect(item.id)"
+              @click="toggleSelect(item)"
               :class="getColor(item.id)"
               class="my-1"
               :id="`select-card-${item.id}`"
@@ -38,16 +38,23 @@ export default {
     };
   },
   methods: {
-    toggleSelect(id) {
-      const foundIdx = this.selectedGlasses.findIndex((item) => item === id);
+    toggleSelect(item) {
+      const foundIdx = this.selectedGlasses.findIndex(
+        (glass) => glass.id === item.id
+      );
       if (foundIdx < 0) {
-        this.selectedGlasses.push(id);
+        this.selectedGlasses.push({
+          id: item.id,
+          table: item.table,
+        });
       } else {
         this.selectedGlasses.splice(foundIdx, 1);
       }
     },
     getColor(id) {
-      return this.selectedGlasses.includes(id) ? "blue lighten-1" : "white";
+      return this.selectedGlasses.find((el) => el.id === id)
+        ? "blue lighten-1"
+        : "white";
     },
   },
 };

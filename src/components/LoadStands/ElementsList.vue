@@ -3,12 +3,12 @@
     <v-virtual-scroll
       width="100%"
       :items="standLoad"
-      item-height="40"
+      item-height="55"
       :height="($root.windowHeight / 5) * 2"
     >
       <template #default="{ item, index }">
         <div
-          class="mt-6"
+          class="mt-8"
           style="
             display: flex;
             direction: row;
